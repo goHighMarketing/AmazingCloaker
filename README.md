@@ -1,0 +1,2 @@
+# AmazingCloaker
+Affiliate Link Cloaker
