@@ -258,9 +258,10 @@ begin
          If Isconsole then writeLn('Yay! Database loaded!');
       {$ENDIF}
       except
-             ShowMessage('Database ac.db Could not be Loaded');
+          //   ShowMessage('Database ac.db Could not be Loaded');
      end;
-
+     ComboBox_Method.ItemIndex:=0;
+     ComboBox_SpecialSettings.ItemIndex:=0;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -300,7 +301,7 @@ begin
          If Isconsole then writeLn('Yay! Database loaded!');
       {$ENDIF}
       except
-             ShowMessage('Database ac.db Could not be Loaded');
+           //  ShowMessage('Database ac.db Could not be Loaded');
      end;
 end;
 
