@@ -1,0 +1,125 @@
+object Form3: TForm3
+  Left = 342
+  Height = 362
+  Top = 31
+  Width = 597
+  Caption = 'AmazingCloaker Preferences'
+  ClientHeight = 362
+  ClientWidth = 597
+  LCLVersion = '2.2.0.4'
+  object Label1: TLabel
+    AnchorSideTop.Control = Owner
+    Left = 168
+    Height = 19
+    Top = 25
+    Width = 244
+    Alignment = taCenter
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 25
+    Caption = 'AmazingCloaker Startup Preferences'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object CheckListBox1: TCheckListBox
+    AnchorSideTop.Control = Label1
+    AnchorSideTop.Side = asrBottom
+    Left = 32
+    Height = 80
+    Top = 69
+    Width = 485
+    BorderSpacing.Top = 25
+    Items.Strings = (
+      'Automatically save cloaking sessions'
+      'Generate embedded cookie when cloaking'
+      'Always force cookie with redirection'
+    )
+    ItemHeight = 25
+    TabOrder = 0
+    Data = {
+      03000000000000
+    }
+  end
+  object StaticText1: TStaticText
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = CheckListBox1
+    AnchorSideTop.Side = asrBottom
+    Left = 32
+    Height = 21
+    Top = 169
+    Width = 147
+    AutoSize = True
+    BorderSpacing.Left = 32
+    BorderSpacing.Top = 20
+    Caption = 'Set default wait time  to'
+    TabOrder = 1
+  end
+  object SpinEditPrefsSeconds: TSpinEdit
+    AnchorSideLeft.Control = StaticText1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = StaticText1
+    AnchorSideTop.Side = asrCenter
+    Left = 182
+    Height = 36
+    Top = 161
+    Width = 82
+    BorderSpacing.Left = 3
+    BorderSpacing.Top = 20
+    TabOrder = 2
+  end
+  object StaticText2: TStaticText
+    AnchorSideLeft.Control = SpinEditPrefsSeconds
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = SpinEditPrefsSeconds
+    AnchorSideTop.Side = asrCenter
+    Left = 267
+    Height = 21
+    Top = 169
+    Width = 266
+    AutoSize = True
+    BorderSpacing.Left = 3
+    Caption = 'seconds before auto setting affiliate cookie'
+    TabOrder = 3
+  end
+  object GroupBox1: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = StaticText1
+    AnchorSideTop.Side = asrBottom
+    Left = 32
+    Height = 103
+    Top = 215
+    Width = 233
+    BorderSpacing.Left = 32
+    BorderSpacing.Top = 25
+    Caption = 'Default Cloaking Method'
+    ClientHeight = 80
+    ClientWidth = 229
+    TabOrder = 4
+    object RadioButtonFramed: TRadioButton
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      Left = 15
+      Height = 23
+      Top = 10
+      Width = 73
+      BorderSpacing.Left = 15
+      BorderSpacing.Top = 10
+      Caption = 'Framed'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object RadioButtonUnframed: TRadioButton
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = RadioButtonFramed
+      AnchorSideTop.Side = asrBottom
+      Left = 15
+      Height = 23
+      Top = 39
+      Width = 89
+      BorderSpacing.Left = 15
+      BorderSpacing.Top = 6
+      Caption = 'Unframed'
+      TabOrder = 1
+    end
+  end
+end

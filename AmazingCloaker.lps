@@ -8,27 +8,24 @@
         <Filename Value="AmazingCloaker.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <WindowIndex Value="-1"/>
-        <TopLine Value="-1"/>
-        <CursorPos X="-1" Y="-1"/>
+        <CursorPos Y="26"/>
         <UsageCount Value="67"/>
       </Unit>
       <Unit>
-        <Filename Value="unit1.pas"/>
+        <Filename Value="prefs.pas"/>
         <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form1"/>
+        <ComponentName Value="Form3"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Unit1"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="206"/>
-        <CursorPos X="25" Y="212"/>
+        <UnitName Value="Prefs"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="25" Y="25"/>
         <UsageCount Value="67"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="resources/Buttons/about.pas"/>
+        <Filename Value="about.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="Form2"/>
         <HasResources Value="True"/>
@@ -42,138 +39,40 @@
         <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="resources/acslideup-bg/prefs.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="Form3"/>
+        <Filename Value="unit1.pas"/>
+        <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Prefs"/>
-        <EditorIndex Value="2"/>
-        <UsageCount Value="48"/>
+        <UnitName Value="Unit1"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="10" Y="16"/>
+        <UsageCount Value="10"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="5">
       <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="204" TopLine="184"/>
+        <Filename Value="prefs.pas"/>
+        <Caret Line="225" Column="31" TopLine="206"/>
+      </Position>
+      <Position>
+        <Filename Value="prefs.pas"/>
+        <Caret Line="17" Column="51"/>
+      </Position>
+      <Position>
+        <Filename Value="prefs.pas"/>
+        <Caret Line="22" Column="43"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="208" Column="42" TopLine="183"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="333" Column="25" TopLine="322"/>
       </Position>
       <Position>
         <Filename Value="unit1.pas"/>
-        <Caret Line="387" TopLine="367"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="379" Column="25" TopLine="339"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="394" Column="38" TopLine="375"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="399" Column="5" TopLine="374"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="134" Column="32" TopLine="121"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="407" Column="27" TopLine="393"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="349" Column="33" TopLine="349"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="184" Column="22" TopLine="169"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="180" Column="24" TopLine="171"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="10" Column="80"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="398" Column="28" TopLine="384"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="396" Column="28" TopLine="384"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="400" Column="8" TopLine="382"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="396" TopLine="382"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="399" Column="26" TopLine="390"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="396" Column="44" TopLine="385"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="280" Column="25" TopLine="265"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="281" Column="25" TopLine="266"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="282" Column="25" TopLine="267"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="283" Column="25" TopLine="268"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="284" Column="25" TopLine="269"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="509" Column="35" TopLine="487"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="173" Column="64" TopLine="170"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="272" Column="18" TopLine="261"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="273" Column="18" TopLine="258"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="172" Column="95" TopLine="167"/>
-      </Position>
-      <Position>
-        <Filename Value="unit1.pas"/>
-        <Caret Line="415" Column="35" TopLine="388"/>
+        <Caret Line="16" Column="10"/>
       </Position>
     </JumpHistory>
     <RunParams>
