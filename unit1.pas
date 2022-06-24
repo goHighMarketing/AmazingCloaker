@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   Menus, LCLProc, LazHelpHTML, UTF8Process, LCLIntf, ComCtrls, ExtCtrls,
-  StdCtrls, Buttons, DBGrids, CheckLst, Spin, ftpsend, About, Prefs;
+  StdCtrls, Buttons, DBGrids, CheckLst, Spin, ftpsend, About, Prefs, Sqlite3dyn;
 
 type
 
@@ -25,6 +25,7 @@ type
     ComboBox_SpecialSettings: TComboBox;
     ComboBox_Method: TComboBox;
     DataSource1: TDataSource;
+    DataSource2: TDataSource;
     DBGrid_FTPSites: TDBGrid;
     DBGrid_Sessions: TDBGrid;
     GroupBox1: TGroupBox;
@@ -92,8 +93,11 @@ type
     SpinEdit1: TSpinEdit;
     SpinEdit_Port: TSpinEdit;
     SQLite3Connection1: TSQLite3Connection;
+    SQLite3Connection2: TSQLite3Connection;
     SQLQuery1: TSQLQuery;
+    SQLQuery2: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
+    SQLTransaction2: TSQLTransaction;
     StaticText1: TStaticText;
     StaticText_RecordAdded: TStaticText;
     StaticText_RedirectPageAdded: TStaticText;
@@ -123,13 +127,26 @@ type
     procedure MenuItemViewHelpClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure QuitClick(Sender: TObject);
+    procedure Sbutton_AddRecordFTPMouseUp(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+    procedure Sbutton_AddRecordMouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
+    procedure Sbutton_SaveRecordFTPMouseUp(Sender: TObject;
+      Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SpinEdit1Change(Sender: TObject);
+    procedure TabSheet2MouseUp(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure TestAffiliateLink(test_afflink: String);
     procedure SQLQuery1FilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure StartDatabase;
   private
+    procedure DisableAdd_FTP;
+    procedure EnableAdd_FTP;
     function FTPSend(LocalFile: string; remoteFile: string; RemoteDir: string
       ): boolean;
+    procedure InsertFTPDB;
+    procedure InsertSessionsDB;
+    procedure LoadFTP_DB;
 
   public
     test_afflink, afflink, prefix: String;
@@ -156,7 +173,9 @@ end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
 begin
-
+       if PageControl1.ActivePageIndex = 1 then
+          LoadFTP_DB();
+         //ShowMessage('FTP Tab is Open');
 end;
 
 procedure TForm1.QuitClick(Sender: TObject);
@@ -164,9 +183,33 @@ begin
       Form1.Close;
 end;
 
+procedure TForm1.Sbutton_AddRecordFTPMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+    EnableAdd_FTP();
+end;
+
+procedure TForm1.Sbutton_AddRecordMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+     // EnableAdd_Session();
+end;
+
+procedure TForm1.Sbutton_SaveRecordFTPMouseUp(Sender: TObject;
+  Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
+begin
+      InsertFTPDB();
+end;
+
 procedure TForm1.SpinEdit1Change(Sender: TObject);
 begin
       if SpinEdit1.Value < 0 then SpinEdit1.Value:=0;
+end;
+
+procedure TForm1.TabSheet2MouseUp(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+       DisableAdd_FTP();
 end;
 
 procedure TForm1.MenuItemAboutClick(Sender: TObject);
@@ -188,6 +231,14 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+     Sbutton_SaveRecordFTP.Enabled:= false;
+     Sbutton_SaveSession.Enabled:= false;
+     ledit_SiteName.Enabled:= false;
+     ledit_FTP.Enabled:= false;
+     ledit_PublicFolder.Enabled:= false;
+     SpinEdit_Port.Enabled:= false;
+     ledit_Username.Enabled:= false;
+     ledit_Password.Enabled:= false;
      StartDatabase;
      Try
        SQLQuery1.Close;
@@ -227,6 +278,30 @@ begin
      afflink:= '';
      test_afflink:= '';
      prefix:= 'https://';
+end;
+
+procedure TForm1.LoadFTP_DB();
+begin
+      Try
+       SQLQuery1.Close;
+      //Use casting (Text to Varchar) in the sql query to avoid "Memo" displaying in the dbgrid for an existing Db with Text fields in the table.
+      // Otherwise, when creating the db, use VARCHAR instead of TEXT when creating the fields.
+     // SQLQuery1.SQL.Text:= 'SELECT CAST( "Sessions" as VARCHAR) as "Sessions", "SessionId" FROM "AffLink"';
+      SQLQuery1.SQL.Text:= 'SELECT * FROM "FTP"';
+      SQLite3Connection1.Connected:= True;
+      SQLTransaction1.Active:= True;
+      DataSource1.DataSet:= SQLQuery1;
+      DBGrid_FTPSites.DataSource:= DataSource1;
+      SQLQuery1.Open;
+      {$IFDEF WINDOWS}
+         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
+      {$ELSE}
+       //  StatusBar1.Panels.Items[0].Text:='Yay! Database loaded!';
+         If Isconsole then writeLn('Yay! Database loaded!');
+      {$ENDIF}
+      except
+             ShowMessage('Database ac.db Could not be Loaded');
+     end;
 end;
 
 procedure TForm1.Label_TestAffLinkClick(Sender: TObject);
@@ -332,17 +407,41 @@ begin
   end;
 end;
 
+procedure TForm1.EnableAdd_FTP();
+begin
+     Sbutton_SaveRecordFTP.Enabled:= true;
+     ledit_SiteName.Enabled:= true;
+     ledit_FTP.Enabled:= true;
+     ledit_PublicFolder.Enabled:= true;
+     SpinEdit_Port.Enabled:= true;
+     ledit_Username.Enabled:= true;
+     ledit_Password.Enabled:= true;
+end;
+
+procedure TForm1.DisableAdd_FTP();
+begin
+     Sbutton_SaveRecordFTP.Enabled:= false;
+     ledit_SiteName.Enabled:= false;
+     ledit_FTP.Enabled:= false;
+     ledit_PublicFolder.Enabled:= false;
+     SpinEdit_Port.Enabled:= false;
+     ledit_Username.Enabled:= false;
+     ledit_Password.Enabled:= false;
+     LoadFTP_DB();
+end;
+
 procedure TForm1.StartDatabase;
-var createTables:boolean;
+var
+   createTables:boolean;
 begin
   {$IFDEF UNIX}  // Linux
-    {$IFNDEF DARWIN}
-      SQLiteLibraryName := './libsqlite3.so';
+    {$IFNDEF DARWIN}  // Mac
+       sqlite3dyn.SQLiteDefaultLibrary := './libsqlite3.so';
     {$ENDIF}
   {$ENDIF}
 
   {$IFDEF WINDOWS} // Windows
-  SQLiteLibraryName := 'sqlite3.dll';
+       sqlite3dyn.SQLiteDefaultLibrary := 'sqlite3.dll';
   {$ENDIF}
 
   SQLite3Connection1.DatabaseName:= Application.Location + 'ac.db';
@@ -389,6 +488,44 @@ begin
     end;
 
 end;
+
+procedure TForm1.InsertFTPDB();
+var
+  sitename, ftp, publicFolder, port, username, password: String;
+  begin
+    SQLQuery1.close;
+    SQLQuery1.SQL.clear;
+    sitename:= ledit_SiteName.Text;
+    ftp:= ledit_FTP.Text;
+    publicFolder:= ledit_PublicFolder.Text;
+    port:= SpinEdit_Port.Text;
+    username:= ledit_Username.Text;
+    password:= ledit_Password.Text;
+    if sitename = '' then begin ShowMessage('Enter a Site Name'); ledit_SiteName.SetFocus; exit; end;
+    if ftp = '' then begin ShowMessage('Enter FTP Address'); ledit_FTP.SetFocus; exit; end;
+    if username = '' then begin ShowMessage('Enter User Name'); ledit_Username.SetFocus; exit; end;
+    if password = '' then begin ShowMessage('Enter a Password'); ledit_Password.SetFocus; exit; end;
+    SQLQuery1.close;
+    SQLQuery1.SQL.Add('INSERT INTO FTP (SiteName, HostName, PubFolder, Port, Username, Password)VALUES(:SITENME,:HOSTNME, :PUBFOLDER, :PORT, :USERNME, :PASSWD)');   //inserts data into the deck table
+    SQLQuery1.Params.ParamByName('SITENME').AsString:=sitename;   //inserts a friendly site name
+    SQLQuery1.Params.ParamByName('HOSTNME').AsString:=ftp;    // inserts the ftp host address
+    SQLQuery1.Params.ParamByName('PUBFOLDER').AsString:=publicFolder;    //inserts the public folder name
+    SQLQuery1.Params.ParamByName('PORT').AsString:=port;       //inserts the port
+    SQLQuery1.Params.ParamByName('USERNME').AsString:=username;    //inserts the user name
+    SQLQuery1.Params.ParamByName('PASSWD').AsString:=password;   // inserts the password
+    SQLQuery1.execSQL;
+    SQLTransaction1.Commit;
+    SQLTransaction1.action:= caCommit;
+    SQLite3Connection1.Open;
+    SQLTransaction1.Active:=true;
+    DisableAdd_FTP();
+  end;
+
+procedure TForm1.InsertSessionsDB;
+begin
+
+end;
+
 
 function TForm1.FTPSend(LocalFile : string; remoteFile : string; RemoteDir : string) : boolean;
 //===========================================================================

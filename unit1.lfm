@@ -576,6 +576,7 @@ object Form1: TForm1
           D4A5E5D1A2ECDDACDCD49FDDD6A4E3DBACDDD2A6DFD5A6DDD5A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        OnMouseUp = Sbutton_AddRecordMouseUp
       end
       object Sbutton_DeleteRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_AddRecord
@@ -1388,12 +1389,12 @@ object Form1: TForm1
         Left = 13
         Height = 136
         Top = 416
-        Width = 301
+        Width = 283
         BorderSpacing.Left = 13
         BorderSpacing.Top = 15
         Caption = 'Embedded Cookie'
         ClientHeight = 113
-        ClientWidth = 297
+        ClientWidth = 279
         TabOrder = 4
         object CheckListBox1: TCheckListBox
           AnchorSideLeft.Control = GroupBox3
@@ -1401,7 +1402,7 @@ object Form1: TForm1
           Left = 9
           Height = 64
           Top = 6
-          Width = 220
+          Width = 247
           BorderSpacing.Left = 9
           BorderSpacing.Top = 6
           Items.Strings = (
@@ -1419,9 +1420,9 @@ object Form1: TForm1
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Label5
           AnchorSideTop.Side = asrCenter
-          Left = 42
+          Left = 37
           Height = 29
-          Top = 78
+          Top = 76
           Width = 56
           BorderSpacing.Left = 3
           OnChange = SpinEdit1Change
@@ -1432,24 +1433,30 @@ object Form1: TForm1
           AnchorSideTop.Control = CheckListBox1
           AnchorSideTop.Side = asrBottom
           Left = 9
-          Height = 21
+          Height = 17
           Top = 82
-          Width = 30
+          Width = 25
           BorderSpacing.Left = 9
           BorderSpacing.Top = 12
           Caption = 'Wait'
+          Font.Height = -12
+          Font.Name = 'Sans'
+          ParentFont = False
         end
         object Label6: TLabel
           AnchorSideLeft.Control = SpinEdit1
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = SpinEdit1
           AnchorSideTop.Side = asrCenter
-          Left = 101
-          Height = 21
+          Left = 96
+          Height = 17
           Top = 82
-          Width = 205
+          Width = 166
           BorderSpacing.Left = 3
           Caption = 'seconds before setting cookie'
+          Font.Height = -12
+          Font.Name = 'Sans'
+          ParentFont = False
         end
       end
       object DBGrid_Sessions: TDBGrid
@@ -1460,10 +1467,10 @@ object Form1: TForm1
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = TabSheet1
         AnchorSideBottom.Side = asrBottom
-        Left = 324
+        Left = 306
         Height = 164
         Top = 426
-        Width = 801
+        Width = 819
         Anchors = [akTop, akLeft, akRight, akBottom]
         AutoFillColumns = True
         BorderSpacing.Left = 10
@@ -1494,7 +1501,7 @@ object Form1: TForm1
         AnchorSideTop.Control = GroupBox2
         AnchorSideTop.Side = asrBottom
         AnchorSideBottom.Control = GroupBox3
-        Left = 324
+        Left = 306
         Height = 21
         Top = 407
         Width = 122
@@ -1507,6 +1514,7 @@ object Form1: TForm1
       ClientHeight = 600
       ClientWidth = 1135
       ImageIndex = 1
+      OnMouseUp = TabSheet2MouseUp
       object DBGrid_FTPSites: TDBGrid
         AnchorSideTop.Control = TabSheet2
         Left = 24
@@ -1528,7 +1536,7 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 228
+        ClientHeight = 209
         ClientWidth = 508
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit
@@ -1604,6 +1612,7 @@ object Form1: TForm1
           EditLabel.Caption = 'Home (Public) Folder'
           LabelPosition = lpBelow
           TabOrder = 2
+          TextHint = 'Optional'
           OnChange = ledit_PublicFolderChange
         end
         object StaticText4: TStaticText
@@ -1620,10 +1629,14 @@ object Form1: TForm1
           TabOrder = 6
         end
         object StaticText5: TStaticText
-          Left = 64
+          AnchorSideTop.Control = SpinEdit_Port
+          AnchorSideTop.Side = asrCenter
+          AnchorSideRight.Control = SpinEdit_Port
+          Left = 59
           Height = 25
-          Top = 88
+          Top = 68
           Width = 37
+          Anchors = [akTop, akRight]
           AutoSize = True
           Caption = 'Port:'
           TabOrder = 7
@@ -1634,6 +1647,7 @@ object Form1: TForm1
           AnchorSideTop.Side = asrBottom
           Left = 96
           Height = 29
+          Hint = 'default is 21'
           Top = 66
           Width = 114
           BorderSpacing.Top = 4
@@ -1769,6 +1783,7 @@ object Form1: TForm1
           D5B1DEDCA2D3D7AECBD1BAD1D0BCE0D4B2E9D8A7E5DAA1DDD99FDDD7AADDD7AA
           DDD7AADDD7AA
         }
+        OnMouseUp = Sbutton_SaveRecordFTPMouseUp
       end
       object Sbutton_FirstRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Label1
@@ -2302,6 +2317,7 @@ object Form1: TForm1
           D4A5E5D1A2ECDDACDCD49FDDD6A4E3DBACDDD2A6DFD5A6DDD5A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        OnMouseUp = Sbutton_AddRecordFTPMouseUp
       end
       object Sbutton_DeleteRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_AddRecordFTP
@@ -4572,5 +4588,32 @@ object Form1: TForm1
     Database = SQLite3Connection1
     Left = 1064
     Top = 80
+  end
+  object DataSource2: TDataSource
+    DataSet = SQLQuery2
+    Left = 921
+    Top = 241
+  end
+  object SQLQuery2: TSQLQuery
+    FieldDefs = <>
+    Params = <>
+    Macros = <>
+    Left = 984
+    Top = 224
+  end
+  object SQLTransaction2: TSQLTransaction
+    Active = False
+    Database = SQLite3Connection1
+    Left = 1056
+    Top = 256
+  end
+  object SQLite3Connection2: TSQLite3Connection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = '/home/toadwick/Apps/Lazarus-Stable/projects/AmazingCloaker/ac.db'
+    KeepConnection = False
+    AlwaysUseBigint = False
+    Left = 848
+    Top = 280
   end
 end
