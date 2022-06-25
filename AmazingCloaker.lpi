@@ -15,7 +15,9 @@
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MajorVersionNr Value="10"/>
+      <MajorVersionNr Value="2022"/>
+      <MinorVersionNr Value="6"/>
+      <RevisionNr Value="24"/>
       <StringTable OriginalFilename="AmazingCloaker" ProductName="AmazingCloaker"/>
     </VersionInfo>
     <MacroValues Count="1">
@@ -52,9 +54,39 @@
           </Linking>
         </CompilerOptions>
       </Item>
-      <SharedMatrixOptions Count="2">
+      <Item Name="MacOS">
+        <MacroValues Count="1">
+          <Macro3 Name="LCLWidgetType" Value="cocoa"/>
+        </MacroValues>
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="AmazingCloaker"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <OtherUnitFiles Value="resources/Buttons"/>
+            <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <TargetOS Value="darwin"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item>
+      <SharedMatrixOptions Count="3">
         <Item1 ID="301866915038" Modes="Windows" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
         <Item2 ID="620477258055" Modes="Default" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
+        <Item3 ID="986899944676" Modes="MacOS" Type="IDEMacro" MacroName="LCLWidgetType" Value="cocoa"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
@@ -108,6 +140,9 @@
       <OtherUnitFiles Value="resources/Buttons"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <CodeGeneration>
+      <TargetOS Value="linux"/>
+    </CodeGeneration>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf2Set"/>

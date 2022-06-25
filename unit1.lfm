@@ -2137,6 +2137,9 @@ object Form1: TForm1
     Panels = <    
       item
         Width = 50
+      end    
+      item
+        Width = 50
       end>
     SimplePanel = False
   end
@@ -3594,7 +3597,36 @@ object Form1: TForm1
         BorderSpacing.Right = 10
         BorderSpacing.Bottom = 10
         Color = clWindow
-        Columns = <>
+        Columns = <        
+          item
+            Title.Caption = 'AffLink'
+            Width = 79
+            FieldName = 'AffLink'
+          end        
+          item
+            Title.Caption = 'AltLink'
+            FieldName = 'AltLink'
+          end        
+          item
+            Title.Caption = 'Title'
+            FieldName = 'Title'
+          end        
+          item
+            Title.Caption = 'LinkText'
+            FieldName = 'LinkText'
+          end        
+          item
+            Title.Caption = 'URL'
+            FieldName = 'URL'
+          end        
+          item
+            Title.Caption = 'Subfolder'
+            FieldName = 'Subfolder'
+          end        
+          item
+            Title.Caption = 'NamePage'
+            FieldName = 'NamePage'
+          end>
         Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
         TabOrder = 5
       end
@@ -3664,7 +3696,7 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 228
+        ClientHeight = 209
         ClientWidth = 508
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit
@@ -3756,7 +3788,7 @@ object Form1: TForm1
           Caption = '/'
           TabOrder = 6
         end
-        object StaticText5: TStaticText
+        object StaticTextPort: TStaticText
           AnchorSideTop.Control = SpinEdit_Port
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = SpinEdit_Port
@@ -6724,6 +6756,8 @@ object Form1: TForm1
   end
   object SQLQuery2: TSQLQuery
     FieldDefs = <>
+    Database = SQLite3Connection2
+    Transaction = SQLTransaction2
     Params = <>
     Macros = <>
     Left = 984
@@ -6731,7 +6765,7 @@ object Form1: TForm1
   end
   object SQLTransaction2: TSQLTransaction
     Active = False
-    Database = SQLite3Connection1
+    Database = SQLite3Connection2
     Left = 1056
     Top = 256
   end
@@ -6740,6 +6774,7 @@ object Form1: TForm1
     LoginPrompt = False
     DatabaseName = '/home/toadwick/Apps/Lazarus-Stable/projects/AmazingCloaker/ac.db'
     KeepConnection = False
+    Transaction = SQLTransaction2
     AlwaysUseBigint = False
     Left = 848
     Top = 280
