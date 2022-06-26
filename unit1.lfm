@@ -3572,6 +3572,7 @@ object Form1: TForm1
           Height = 17
           Top = 82
           Width = 166
+          Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 3
           Caption = 'seconds before setting cookie'
           Font.Height = -12
@@ -3600,31 +3601,37 @@ object Form1: TForm1
         Columns = <        
           item
             Title.Caption = 'AffLink'
-            Width = 79
+            Width = 63
             FieldName = 'AffLink'
           end        
           item
             Title.Caption = 'AltLink'
+            Width = 62
             FieldName = 'AltLink'
           end        
           item
             Title.Caption = 'Title'
+            Width = 44
             FieldName = 'Title'
           end        
           item
             Title.Caption = 'LinkText'
+            Width = 72
             FieldName = 'LinkText'
           end        
           item
             Title.Caption = 'URL'
+            Width = 43
             FieldName = 'URL'
           end        
           item
             Title.Caption = 'Subfolder'
+            Width = 82
             FieldName = 'Subfolder'
           end        
           item
             Title.Caption = 'NamePage'
+            Width = 90
             FieldName = 'NamePage'
           end>
         Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
@@ -3696,7 +3703,7 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 209
+        ClientHeight = 228
         ClientWidth = 508
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit
