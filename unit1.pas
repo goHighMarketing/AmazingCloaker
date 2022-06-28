@@ -37,6 +37,7 @@ type
     Image1: TImage;
     Image2: TImage;
     ImageList1: TImageList;
+    ImageList_MainMenu: TImageList;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -66,6 +67,7 @@ type
     MainMenu1: TMainMenu;
     Memo_LinkCodes: TMemo;
     Memo_FTPStatus: TMemo;
+    MenuItemVisitGithub: TMenuItem;
     MenuItemEdit: TMenuItem;
     MenuItemPrefs: TMenuItem;
     MenuItemAbout: TMenuItem;
@@ -90,6 +92,8 @@ type
     Sbutton_SaveSession: TSpeedButton;
     Sbutton_PriorRecord: TSpeedButton;
     Sbutton_SaveRecordFTP: TSpeedButton;
+    Separator1: TMenuItem;
+    Separator2: TMenuItem;
     SpinEdit1: TSpinEdit;
     SpinEdit_Port: TSpinEdit;
     SQLite3Connection1: TSQLite3Connection;
@@ -113,6 +117,7 @@ type
     procedure BitBtnCloakLinkClick(Sender: TObject);
     procedure Button_FTPConnectClick(Sender: TObject);
     procedure CheckBox_GoogleTrackingChange(Sender: TObject);
+    procedure ComboBox_MethodChange(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -125,6 +130,7 @@ type
     procedure MenuItemAboutClick(Sender: TObject);
     procedure MenuItemPrefsClick(Sender: TObject);
     procedure MenuItemViewHelpClick(Sender: TObject);
+    procedure MenuItemVisitGithubClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure QuitClick(Sender: TObject);
     procedure Sbutton_AddRecordFTPMouseUp(Sender: TObject;
@@ -147,6 +153,7 @@ type
     procedure InsertFTPDB;
     procedure InsertSessionsDB;
     procedure LoadFTP_DB;
+    procedure VisitGithub;
 
   public
     test_afflink, afflink, prefix: String;
@@ -169,6 +176,11 @@ var
 begin
     URL:='AmazingCloaker_help.pdf';
     OpenDocument(URL);
+end;
+
+procedure TForm1.MenuItemVisitGithubClick(Sender: TObject);
+begin
+       VisitGithub();
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
@@ -351,6 +363,30 @@ begin
        end;
 end;
 
+procedure TForm1.ComboBox_MethodChange(Sender: TObject);
+var
+  index: Integer;
+begin
+    index:= ComboBox_Method.ItemIndex;
+    if index = 1 then
+      begin
+        ComboBox_Extensions.Clear;
+        ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
+        ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
+        ComboBox_Extensions.ItemIndex:=0;
+        exit;
+      end;
+    if index = 0 then
+      begin
+        ComboBox_Extensions.Clear;
+        ComboBox_Extensions.AddItem('.html', ComboBox_Extensions);
+        ComboBox_Extensions.AddItem('.htm', ComboBox_Extensions);
+        ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
+        ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
+        ComboBox_Extensions.ItemIndex:=0;
+      end;
+end;
+
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
      SQLQuery1.Close;
@@ -395,6 +431,37 @@ begin
     p:=System.Pos('%s', BrowserParams);
     System.Delete(BrowserParams,p,2);
     System.Insert(test_afflink,BrowserParams,p);
+
+    // start browser
+    BrowserProcess:=TProcessUTF8.Create(nil);
+    try
+      BrowserProcess.ParseCmdLine(BrowserPath+' '+BrowserParams);
+      BrowserProcess.Execute;
+    finally
+      BrowserProcess.Free;
+    end;
+  finally
+    v.Free;
+  end;
+end;
+
+procedure TForm1.VisitGithub();
+var
+  v: THTMLBrowserHelpViewer;
+  BrowserPath, BrowserParams: string;
+  p: LongInt;
+  URL: String;
+  BrowserProcess: TProcessUTF8;
+begin
+  URL:='https://github.com/goHighMarketing/AmazingCloaker';
+  v:=THTMLBrowserHelpViewer.Create(nil);
+  try
+    v.FindDefaultBrowser(BrowserPath,BrowserParams);
+    debugln(['Path=',BrowserPath,' Params=',BrowserParams]);
+
+    p:=System.Pos('%s', BrowserParams);
+    System.Delete(BrowserParams,p,2);
+    System.Insert(URL,BrowserParams,p);
 
     // start browser
     BrowserProcess:=TProcessUTF8.Create(nil);

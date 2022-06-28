@@ -6,6 +6,8 @@ object Form3: TForm3
   Caption = 'AmazingCloaker Preferences'
   ClientHeight = 362
   ClientWidth = 597
+  Constraints.MinHeight = 362
+  Constraints.MinWidth = 597
   Icon.Data = {
     3E08010000000100010080800000010020002808010016000000280000008000
     0000000100000100200000000000000001006400000064000000000000000000
@@ -2123,13 +2125,15 @@ object Form3: TForm3
     FFFFFFFFFFFFE0000FFFC000000000FFFFFFFFFFFFFFE0001FFFE000000000FF
     FFFF
   }
-  LCLVersion = '2.2.0.4'
   object Label1: TLabel
+    AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
-    Left = 168
-    Height = 19
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 21
     Top = 25
-    Width = 244
+    Width = 597
     Alignment = taCenter
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 25
@@ -2141,8 +2145,8 @@ object Form3: TForm3
     AnchorSideTop.Control = Label1
     AnchorSideTop.Side = asrBottom
     Left = 32
-    Height = 80
-    Top = 69
+    Height = 95
+    Top = 71
     Width = 485
     BorderSpacing.Top = 25
     Items.Strings = (
@@ -2150,7 +2154,7 @@ object Form3: TForm3
       'Generate embedded cookie when cloaking'
       'Always force cookie with redirection'
     )
-    ItemHeight = 25
+    ItemHeight = 27
     TabOrder = 0
     Data = {
       03000000000000
@@ -2161,9 +2165,9 @@ object Form3: TForm3
     AnchorSideTop.Control = CheckListBox1
     AnchorSideTop.Side = asrBottom
     Left = 32
-    Height = 21
-    Top = 169
-    Width = 147
+    Height = 25
+    Top = 186
+    Width = 167
     AutoSize = True
     BorderSpacing.Left = 32
     BorderSpacing.Top = 20
@@ -2175,9 +2179,9 @@ object Form3: TForm3
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = StaticText1
     AnchorSideTop.Side = asrCenter
-    Left = 182
-    Height = 36
-    Top = 161
+    Left = 202
+    Height = 29
+    Top = 184
     Width = 82
     BorderSpacing.Left = 3
     BorderSpacing.Top = 20
@@ -2188,10 +2192,10 @@ object Form3: TForm3
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = SpinEditPrefsSeconds
     AnchorSideTop.Side = asrCenter
-    Left = 267
-    Height = 21
-    Top = 169
-    Width = 266
+    Left = 287
+    Height = 25
+    Top = 186
+    Width = 299
     AutoSize = True
     BorderSpacing.Left = 3
     Caption = 'seconds before auto setting affiliate cookie'
@@ -2203,7 +2207,7 @@ object Form3: TForm3
     AnchorSideTop.Side = asrBottom
     Left = 32
     Height = 103
-    Top = 215
+    Top = 236
     Width = 233
     BorderSpacing.Left = 32
     BorderSpacing.Top = 25
@@ -2215,9 +2219,9 @@ object Form3: TForm3
       AnchorSideLeft.Control = GroupBox1
       AnchorSideTop.Control = GroupBox1
       Left = 15
-      Height = 23
+      Height = 25
       Top = 10
-      Width = 73
+      Width = 76
       BorderSpacing.Left = 15
       BorderSpacing.Top = 10
       Caption = 'Framed'
@@ -2230,9 +2234,9 @@ object Form3: TForm3
       AnchorSideTop.Control = RadioButtonFramed
       AnchorSideTop.Side = asrBottom
       Left = 15
-      Height = 23
-      Top = 39
-      Width = 89
+      Height = 25
+      Top = 41
+      Width = 93
       BorderSpacing.Left = 15
       BorderSpacing.Top = 6
       Caption = 'Unframed'
