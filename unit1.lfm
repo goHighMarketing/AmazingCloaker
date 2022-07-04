@@ -3496,7 +3496,7 @@ object Form1: TForm1
           BorderSpacing.Left = 9
           Caption = 'Redirect page successfully created. You are now ready to upload to FTP'
           Color = clDefault
-          Font.Color = clLime
+          Font.Color = clGreen
           ParentFont = False
           ParentColor = False
           TabOrder = 10
@@ -3704,7 +3704,7 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 209
+        ClientHeight = 228
         ClientWidth = 508
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit

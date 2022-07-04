@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   Menus, LCLProc, LCLType, LazHelpHTML, UTF8Process, LCLIntf, ComCtrls, ExtCtrls,
-  StdCtrls, Buttons, DBGrids, CheckLst, Spin, ftpsend, About, Prefs, Sqlite3dyn;
+  StdCtrls, Buttons, DBGrids, CheckLst, Spin, ftpsend, About, Prefs, IniFiles,
+  Sqlite3dyn, FileUtil;
 
 type
 
@@ -114,6 +115,7 @@ type
     TabSheet3: TTabSheet;
     Quit: TMenuItem;
     MenuItemFile: TMenuItem;
+    iniSettings: TStringList;
     procedure BitBtnCloakLinkClick(Sender: TObject);
     procedure Button_FTPConnectClick(Sender: TObject);
     procedure CheckBox_GoogleTrackingChange(Sender: TObject);
@@ -150,6 +152,7 @@ type
     procedure EnableAdd_FTP;
     function FTPSend(LocalFile: string; remoteFile: string; RemoteDir: string
       ): boolean;
+    procedure iniRead;
     procedure InsertFTPDB;
     procedure InsertSessionsDB;
     procedure LoadFTP_DB;
@@ -158,7 +161,12 @@ type
   public
     test_afflink, afflink, prefix: String;
     fHost, fUserID, fPassword: String;
-
+    INI: TINIFile;
+    INI_SECTION_PREFS, INI_SECTION_SESSIONS: String;
+    AutoSaveSessions, GenEmbeddedCookie, ForceCookie: Bool;
+    DefaultWaitTime, CloakMethod: Integer;
+  const
+  IniFile = 'ac.ini';
   end;
 
 var
@@ -273,8 +281,12 @@ begin
       except
           //   ShowMessage('Database ac.db Could not be Loaded');
      end;
-     ComboBox_Method.ItemIndex:=0;
+     if not FileExists('ac.ini') then
+       ComboBox_Method.ItemIndex:=0;
      ComboBox_SpecialSettings.ItemIndex:=0;
+     INI_SECTION_PREFS:= 'PREFS';
+     INI_SECTION_SESSIONS:= 'Session_Settings';
+     iniRead;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -292,6 +304,21 @@ begin
      afflink:= '';
      test_afflink:= '';
      prefix:= 'https://';
+end;
+
+procedure TForm1.iniRead();
+begin
+    INI:= TINIFile.Create(Application.Location + IniFile);
+    try
+        // Read values from the INI file.
+        CheckBox_SaveSessions.Checked:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',true);
+        CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',true);
+        CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',true);
+        SpinEdit1.Value:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',0);
+        ComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
+    finally
+        INI.Free;
+     end;
 end;
 
 procedure TForm1.LoadFTP_DB();
