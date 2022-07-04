@@ -166,7 +166,7 @@ type
     AutoSaveSessions, GenEmbeddedCookie, ForceCookie: Bool;
     DefaultWaitTime, CloakMethod: Integer;
   const
-  IniFile = 'ac.ini';
+    IniFile = 'ac.ini';
   end;
 
 var
@@ -308,12 +308,12 @@ end;
 
 procedure TForm1.iniRead();
 begin
-    INI:= TINIFile.Create(Application.Location + IniFile);
+    INI:= TINIFile.Create(IniFile);
     try
         // Read values from the INI file.
-        CheckBox_SaveSessions.Checked:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',true);
-        CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',true);
-        CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',true);
+        CheckBox_SaveSessions.Checked:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',false);
+        CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',false);
+        CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',false);
         SpinEdit1.Value:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',0);
         ComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
     finally

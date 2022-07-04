@@ -30,9 +30,6 @@ type
 
   public
     iniPath: String;
-    slInfo: TStringList;
-    AutoSaveSessions, GenEmbeddedCookie, ForceCookie: Boolean;
-    DefaultWaitTime, CloakMethod: Integer;
     INI_SECTION_PREFS: String;
     INI: TIniFile;
   const
@@ -68,14 +65,15 @@ begin
     method:= 0;
  // Put reading the INI file inside a try/finally block to prevent
  // memory leaks
-    if RadioButtonUnframed.Checked then method:= 1;
     try
         // Read values from the INI file.
-        AutoSaveSessions:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',CheckListBox1.Checked[0]);
-        GenEmbeddedCookie:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',CheckListBox1.Checked[1]);
-        ForceCookie:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',CheckListBox1.Checked[2]);
-        DefaultWaitTime:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',SpinEditPrefsSeconds.Value);
-        CloakMethod:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',method);
+        CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',false);
+        CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',false);
+        CheckListBox1.Checked[2]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',false);
+        SpinEditPrefsSeconds.Value:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',0);
+        method:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
+        if method = 0 then RadioButtonFramed.Checked:= true;
+        if method = 1 then RadioButtonUnframed.Checked:= true;
     finally
         INI.Free;
      end;
