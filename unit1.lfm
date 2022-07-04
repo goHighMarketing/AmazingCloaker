@@ -2129,6 +2129,7 @@ object Form1: TForm1
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  LCLVersion = '2.2.0.4'
   object StatusBar1: TStatusBar
     Left = 0
     Height = 25
@@ -3704,7 +3705,7 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 228
+        ClientHeight = 209
         ClientWidth = 508
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit
@@ -4863,7 +4864,7 @@ object Form1: TForm1
         BorderSpacing.Left = 38
         BorderSpacing.Top = 20
         Caption = 'Your Cloaked Link Code'
-        ClientHeight = 220
+        ClientHeight = 201
         ClientWidth = 884
         TabOrder = 0
         object Label4: TLabel

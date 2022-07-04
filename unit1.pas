@@ -281,7 +281,7 @@ begin
       except
           //   ShowMessage('Database ac.db Could not be Loaded');
      end;
-     if not FileExists('ac.ini') then
+     if not FileExists(IniFile) then
        ComboBox_Method.ItemIndex:=0;
      ComboBox_SpecialSettings.ItemIndex:=0;
      INI_SECTION_PREFS:= 'PREFS';
