@@ -19,14 +19,15 @@ type
     Button_CopyLinkCodes: TButton;
     Button_CopyCookieCode: TButton;
     Button_FTPConnect: TButton;
+    CheckBox_ForceCookie: TCheckBox;
+    CheckBox_InclCookie: TCheckBox;
     CheckBox_SaveSessions: TCheckBox;
     CheckBox_GoogleTracking: TCheckBox;
-    CheckListBox1: TCheckListBox;
+    ComboBox_Extensions: TComboBox;
+    ComboBox_Method: TComboBox;
     ComboBox_SpecialSettings: TComboBox;
     DataSource1: TDataSource;
     DataSource2: TDataSource;
-    DBComboBox_Extensions: TDBComboBox;
-    DBComboBox_Method: TDBComboBox;
     DBEdit_RedirectPage: TDBEdit;
     DBEdit_SubDirectory: TDBEdit;
     DBEdit_URL: TDBEdit;
@@ -125,6 +126,7 @@ type
     procedure BitBtnCloakLinkClick(Sender: TObject);
     procedure Button_FTPConnectClick(Sender: TObject);
     procedure CheckBox_GoogleTrackingChange(Sender: TObject);
+    procedure ComboBox_MethodChange(Sender: TObject);
     procedure DBComboBox_MethodChange(Sender: TObject);
     procedure DBGrid_SessionsCellClick(Column: TColumn);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -277,14 +279,14 @@ begin
      ledit_Username.Enabled:= false;
      ledit_Password.Enabled:= false;
      if not FileExists(IniFile) then
-       DBComboBox_Method.ItemIndex:=0;
+       ComboBox_Method.ItemIndex:=0;
      ComboBox_SpecialSettings.ItemIndex:=0;
-     DBComboBox_Extensions.ItemIndex:=0;
+     ComboBox_Extensions.ItemIndex:=0;
      INI_SECTION_PREFS:= 'PREFS';
      INI_SECTION_SESSIONS:= 'Session_Settings';
      iniRead;
      LoadSession_DB;
- //    set_ComboBox_Method;
+     set_ComboBox_Method;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -310,18 +312,16 @@ begin
     try
         // Read values from the INI file.
         CheckBox_SaveSessions.Checked:= INI.ReadBool(INI_SECTION_PREFS,'AutoSaveSessions',false);
-        CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',false);
-        CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',false);
+        CheckBox_InclCookie.Checked:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',false);
+        CheckBox_ForceCookie.Checked:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',false);
         SpinEdit1.Value:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',0);
-        DBComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
+        ComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
     finally
         INI.Free;
      end;
 end;
 
 procedure TForm1.LoadSession_DB();
-var
-  method, extension: longint;
 begin
     StartDatabase;
      Try
@@ -345,9 +345,6 @@ begin
           //   ShowMessage('Database ac.db Could not be Loaded');
      end;
 
-     method:= StrToInt(DBComboBox_Method.Text);
-     extension:= StrToInt(DBComboBox_Extensions.Text);
-     DBComboBox_Method.ItemIndex:= method;
      ComboBox_SpecialSettings.ItemIndex:= 0;
      set_ComboBox_Method;
 
@@ -367,7 +364,7 @@ end;
 
 procedure TForm1.LoadSession(id: String);
 var
-  method, special: longint;
+  method, extension, special: longint;
 begin
     Try
       SQLQuery1.Close;
@@ -393,16 +390,16 @@ begin
      DBEdit_URL.DataField:= 'URL';
      DBEdit_SubDirectory.DataField:= 'Subfolder';
      DBEdit_RedirectPage.DataField:= 'NamePage';
-     DBComboBox_Method.DataField:= 'Method';
+     extension:= StrToInt(DBGrid_Sessions.Columns.Items[8].Field.Text);
+     ComboBox_Extensions.ItemIndex:= extension;
+     ComboBox_Method.ItemIndex:= StrToInt(DBGrid_Sessions.Columns.Items[9].Field.Text);
      ComboBox_SpecialSettings.ItemIndex:= StrToInt(DBGrid_Sessions.Columns.Items[10].Field.Text);
-     DBComboBox_Extensions.DataField:= 'Extension';
 
-     method:= StrToInt(DBComboBox_Method.Text);
   //   special:= StrToInt(DBComboBox_SpecialSettings.Text);
-     DBComboBox_Method.ItemIndex:= method;
   //   DBComboBox_SpecialSettings.ItemIndex:= special;
      set_ComboBox_Method;
-
+     if (extension = 3) and (ComboBox_Method.ItemIndex = 1) then ComboBox_Extensions.ItemIndex:= 1; //set to .asp if Method Un-Framed
+     // Hide SOME DATA-GRID COLUMNS
      DBGrid_Sessions.Options := DBGrid_Sessions.Options - [dgIndicator];  // remove indicator
      DBGrid_Sessions.Columns.Items[8].Visible:= false;
      DBGrid_Sessions.Columns.Items[9].Visible:= false;
@@ -413,7 +410,6 @@ begin
      DBGrid_Sessions.Columns.Items[14].Visible:= false;
      DBGrid_Sessions.Columns.Items[15].Visible:= false;
      DBGrid_Sessions.Columns.Items[16].Visible:= false;
-     set_ComboBox_Method;
 end;
 
 procedure TForm1.LoadFTP_DB();
@@ -485,6 +481,11 @@ begin
        end;
 end;
 
+procedure TForm1.ComboBox_MethodChange(Sender: TObject);
+begin
+       set_ComboBox_Method;
+end;
+
 procedure TForm1.DBComboBox_MethodChange(Sender: TObject);
 begin
       set_ComboBox_Method;
@@ -507,26 +508,26 @@ procedure TForm1.set_ComboBox_Method();
 var
   index: String;
 begin
-   index:= DBComboBox_Method.Text;
+   index:= ComboBox_Method.Text;
 if index = 'Framed' then
   begin
-    DBComboBox_Extensions.Clear;
-    DBComboBox_Extensions.AddItem('.html', DBComboBox_Extensions);
-    DBComboBox_Extensions.AddItem('.htm', DBComboBox_Extensions);
-    DBComboBox_Extensions.AddItem('.php', DBComboBox_Extensions);
-    DBComboBox_Extensions.AddItem('.asp', DBComboBox_Extensions);
-    DBComboBox_Extensions.ItemIndex:=0;
-    DBComboBox_Extensions.Refresh;
+    ComboBox_Extensions.Clear;
+    ComboBox_Extensions.AddItem('.html', ComboBox_Extensions);
+    ComboBox_Extensions.AddItem('.htm', ComboBox_Extensions);
+    ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
+    ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
+    ComboBox_Extensions.ItemIndex:=0;
+    ComboBox_Extensions.Refresh;
     exit;
     end;
-if index = 'UnFramed' then
+if index = 'Un-Framed' then
   begin
     // ShowMessage(ComboBox_Method.Text);
-    DBComboBox_Extensions.Clear;
-    DBComboBox_Extensions.AddItem('.php', DBComboBox_Extensions);
-    DBComboBox_Extensions.AddItem('.asp', DBComboBox_Extensions);
-    DBComboBox_Extensions.Refresh;
-    DBComboBox_Extensions.ItemIndex:=0;
+    ComboBox_Extensions.Clear;
+    ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
+    ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
+    ComboBox_Extensions.Refresh;
+    ComboBox_Extensions.ItemIndex:=0;
     exit;
   end;
 end;

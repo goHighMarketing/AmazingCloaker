@@ -3366,7 +3366,6 @@ object Form1: TForm1
           Hint = 'Your Affiliate Link'
           Top = 9
           Width = 816
-          DataField = 'AffLink'
           DataSource = DataSource1
           BorderSpacing.Left = 144
           BorderSpacing.Top = 9
@@ -3519,18 +3518,15 @@ object Form1: TForm1
           MaxLength = 0
           TabOrder = 9
         end
-        object DBComboBox_Extensions: TDBComboBox
+        object ComboBox_Extensions: TComboBox
           AnchorSideLeft.Control = DBEdit_RedirectPage
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = lbl_RedirectPage
-          AnchorSideTop.Side = asrCenter
+          AnchorSideTop.Control = DBEdit_RedirectPage
           Left = 353
           Height = 31
           Top = 164
           Width = 100
           BorderSpacing.Left = 1
-          DataField = 'Extension'
-          DataSource = DataSource1
           ItemHeight = 0
           Items.Strings = (
             '.html'
@@ -3538,8 +3534,8 @@ object Form1: TForm1
             '.php'
             '.asp'
           )
-          MaxLength = 0
           TabOrder = 10
+          Text = 'ComboBox_Extensions'
         end
       end
       object GroupBox3: TGroupBox
@@ -3556,24 +3552,6 @@ object Form1: TForm1
         ClientHeight = 116
         ClientWidth = 281
         TabOrder = 2
-        object CheckListBox1: TCheckListBox
-          AnchorSideLeft.Control = GroupBox3
-          Left = 9
-          Height = 64
-          Top = 6
-          Width = 255
-          BorderSpacing.Left = 9
-          BorderSpacing.Top = 6
-          Items.Strings = (
-            'Include embedded cookie'
-            'Force cookie with redirection'
-          )
-          ItemHeight = 23
-          TabOrder = 0
-          Data = {
-            020000000000
-          }
-        end
         object SpinEdit1: TSpinEdit
           AnchorSideLeft.Control = Label5
           AnchorSideLeft.Side = asrBottom
@@ -3581,19 +3559,19 @@ object Form1: TForm1
           AnchorSideTop.Side = asrCenter
           Left = 37
           Height = 29
-          Top = 76
+          Top = 72
           Width = 56
           BorderSpacing.Left = 3
           OnChange = SpinEdit1Change
-          TabOrder = 1
+          TabOrder = 0
         end
         object Label5: TLabel
           AnchorSideLeft.Control = GroupBox3
-          AnchorSideTop.Control = CheckListBox1
+          AnchorSideTop.Control = CheckBox_ForceCookie
           AnchorSideTop.Side = asrBottom
           Left = 9
           Height = 17
-          Top = 82
+          Top = 78
           Width = 25
           BorderSpacing.Left = 9
           BorderSpacing.Top = 12
@@ -3609,7 +3587,7 @@ object Form1: TForm1
           AnchorSideTop.Side = asrCenter
           Left = 96
           Height = 17
-          Top = 82
+          Top = 78
           Width = 168
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 3
@@ -3617,6 +3595,31 @@ object Form1: TForm1
           Font.Height = -12
           Font.Name = 'Sans'
           ParentFont = False
+        end
+        object CheckBox_InclCookie: TCheckBox
+          AnchorSideLeft.Control = GroupBox3
+          AnchorSideTop.Control = GroupBox3
+          Left = 9
+          Height = 21
+          Top = 15
+          Width = 190
+          BorderSpacing.Left = 9
+          BorderSpacing.Top = 15
+          Caption = 'Include embedded cookie'
+          TabOrder = 1
+        end
+        object CheckBox_ForceCookie: TCheckBox
+          AnchorSideLeft.Control = GroupBox3
+          AnchorSideTop.Control = CheckBox_InclCookie
+          AnchorSideTop.Side = asrBottom
+          Left = 9
+          Height = 21
+          Top = 45
+          Width = 213
+          BorderSpacing.Left = 9
+          BorderSpacing.Top = 9
+          Caption = 'Force cookie with redirection'
+          TabOrder = 2
         end
       end
       object DBGrid_Sessions: TDBGrid
@@ -3671,27 +3674,6 @@ object Form1: TForm1
         BorderSpacing.Top = 6
         Caption = 'Previous Sessions'
       end
-      object DBComboBox_Method: TDBComboBox
-        AnchorSideLeft.Control = Label2
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Label2
-        AnchorSideTop.Side = asrCenter
-        Left = 132
-        Height = 31
-        Top = 74
-        Width = 141
-        BorderSpacing.Left = 7
-        DataField = 'Method'
-        DataSource = DataSource1
-        ItemHeight = 0
-        Items.Strings = (
-          'Framed'
-          'UnFramed'
-        )
-        MaxLength = 0
-        OnChange = DBComboBox_MethodChange
-        TabOrder = 5
-      end
       object ComboBox_SpecialSettings: TComboBox
         AnchorSideLeft.Control = Label3
         AnchorSideLeft.Side = asrBottom
@@ -3708,8 +3690,27 @@ object Form1: TForm1
           'Cloak a Banner Ad'
           'Cloak for an email or e-book'
         )
-        TabOrder = 6
+        TabOrder = 5
         Text = 'ComboBox_SpecialSettings'
+      end
+      object ComboBox_Method: TComboBox
+        AnchorSideLeft.Control = Label2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label2
+        AnchorSideTop.Side = asrCenter
+        Left = 129
+        Height = 31
+        Top = 74
+        Width = 175
+        BorderSpacing.Left = 4
+        ItemHeight = 0
+        Items.Strings = (
+          'Framed'
+          'Un-Framed'
+        )
+        OnChange = ComboBox_MethodChange
+        TabOrder = 6
+        Text = 'ComboBox_Method'
       end
     end
     object TabSheet2: TTabSheet
