@@ -2129,11 +2129,10 @@ object Form1: TForm1
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
-  LCLVersion = '2.2.0.4'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 25
-    Top = 675
+    Height = 21
+    Top = 679
     Width = 1139
     Panels = <    
       item
@@ -2152,7 +2151,7 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = StatusBar1
     Left = 0
-    Height = 635
+    Height = 639
     Top = 40
     Width = 1139
     ActivePage = TabSheet1
@@ -2163,16 +2162,16 @@ object Form1: TForm1
     OnChange = PageControl1Change
     object TabSheet1: TTabSheet
       Caption = 'Cloak Your Affiiate Link'
-      ClientHeight = 600
-      ClientWidth = 1135
+      ClientHeight = 608
+      ClientWidth = 1129
       ImageIndex = 0
       object Label1: TLabel
         AnchorSideLeft.Control = TabSheet1
         AnchorSideTop.Control = TabSheet1
         Left = 30
-        Height = 21
+        Height = 19
         Top = 20
-        Width = 155
+        Width = 147
         BorderSpacing.Left = 30
         BorderSpacing.Top = 20
         Caption = 'Save Cloaking Session:'
@@ -2182,9 +2181,10 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Label1
         AnchorSideTop.Side = asrCenter
-        Left = 200
+        Left = 192
         Height = 37
-        Top = 12
+        Hint = 'First Record'
+        Top = 11
         Width = 41
         AutoSize = True
         BorderSpacing.Left = 15
@@ -2308,15 +2308,18 @@ object Form1: TForm1
           D4AACDCFA1E3DEADE1D7A1DEDAA0D8DEA5D2D5A3E2D4AAEDCEADDDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        OnClick = Sbutton_FirstRecordClick
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_NextRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_FirstRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_FirstRecord
         AnchorSideTop.Side = asrCenter
-        Left = 241
+        Left = 233
         Height = 37
-        Top = 12
+        Top = 11
         Width = 40
         AutoSize = True
         Glyph.Data = {
@@ -2441,9 +2444,10 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_PriorRecord
         AnchorSideTop.Side = asrCenter
-        Left = 282
+        Left = 274
         Height = 37
-        Top = 12
+        Hint = 'Last Record'
+        Top = 11
         Width = 41
         AutoSize = True
         Glyph.Data = {
@@ -2566,15 +2570,18 @@ object Form1: TForm1
           D4AACDCFA1E3DEADE1D7A1DEDAA0D8DEA5D2D5A3E2D4AAEDCEADDDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_AddRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_LastRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_LastRecord
         AnchorSideTop.Side = asrCenter
-        Left = 323
+        Left = 315
         Height = 37
-        Top = 12
+        Hint = 'Add New Session'
+        Top = 11
         Width = 41
         AutoSize = True
         Glyph.Data = {
@@ -2698,15 +2705,18 @@ object Form1: TForm1
           DDD7AADDD7AADDD7AA00
         }
         OnMouseUp = Sbutton_AddRecordMouseUp
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_DeleteRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_AddRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_AddRecord
         AnchorSideTop.Side = asrCenter
-        Left = 364
+        Left = 356
         Height = 37
-        Top = 12
+        Hint = 'Delete a Session'
+        Top = 11
         Width = 41
         AutoSize = True
         Glyph.Data = {
@@ -2829,15 +2839,18 @@ object Form1: TForm1
           D4A5E5D1A2ECDDACDCD49FDDD6A4E3DBACDDD2A6DFD5A6DDD5A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_EditRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_DeleteRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_DeleteRecord
         AnchorSideTop.Side = asrCenter
-        Left = 405
+        Left = 397
         Height = 37
-        Top = 12
+        Hint = 'Edit Sessions'
+        Top = 11
         Width = 40
         AutoSize = True
         Glyph.Data = {
@@ -2956,15 +2969,18 @@ object Form1: TForm1
           D6A7DED8ABDDD7AADED8ABD8D2A5E7E1B4DDD7AAD7D1A4E2DCAFDDD7AADDD7AA
           DDD7AADDD7AA
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_SaveSession: TSpeedButton
         AnchorSideLeft.Control = Sbutton_EditRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_EditRecord
         AnchorSideTop.Side = asrCenter
-        Left = 445
+        Left = 437
         Height = 37
-        Top = 12
+        Hint = 'Save Session'
+        Top = 11
         Width = 40
         AutoSize = True
         Glyph.Data = {
@@ -3083,15 +3099,18 @@ object Form1: TForm1
           D5B1DEDCA2D3D7AECBD1BAD1D0BCE0D4B2E9D8A7E5DAA1DDD99FDDD7AADDD7AA
           DDD7AADDD7AA
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_PriorRecord: TSpeedButton
         AnchorSideLeft.Control = Sbutton_FirstRecord
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Sbutton_FirstRecord
         AnchorSideTop.Side = asrCenter
-        Left = 241
+        Left = 233
         Height = 37
-        Top = 12
+        Hint = 'Previous Record'
+        Top = 11
         Width = 41
         AutoSize = True
         Glyph.Data = {
@@ -3214,63 +3233,27 @@ object Form1: TForm1
           D5AFDFD6A4DBD4A2E0DAA5E0DAA5DED5A3E2DBAAE3DDB0D5D2A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Label2: TLabel
         AnchorSideLeft.Control = TabSheet1
+        AnchorSideTop.Side = asrCenter
         Left = 30
-        Height = 21
+        Height = 19
         Top = 80
-        Width = 99
+        Width = 95
         BorderSpacing.Left = 30
         Caption = 'Cloak Method:'
       end
-      object ComboBox_Method: TComboBox
-        AnchorSideLeft.Control = Label2
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Label2
-        AnchorSideTop.Side = asrCenter
-        Left = 136
-        Height = 32
-        Top = 74
-        Width = 144
-        AutoSize = False
-        BorderSpacing.Left = 7
-        ItemHeight = 0
-        Items.Strings = (
-          'Framed'
-          'UnFramed'
-        )
-        OnChange = ComboBox_MethodChange
-        TabOrder = 0
-      end
       object Label3: TLabel
-        AnchorSideLeft.Control = ComboBox_Method
         AnchorSideLeft.Side = asrBottom
-        Left = 310
-        Height = 21
+        Left = 306
+        Height = 19
         Top = 80
-        Width = 111
+        Width = 106
         BorderSpacing.Left = 30
         Caption = 'Special Settings:'
-      end
-      object ComboBox_SpecialSettings: TComboBox
-        AnchorSideLeft.Control = Label3
-        AnchorSideLeft.Side = asrBottom
-        AnchorSideTop.Control = Label3
-        AnchorSideTop.Side = asrCenter
-        Left = 428
-        Height = 32
-        Top = 74
-        Width = 234
-        AutoSize = False
-        BorderSpacing.Left = 7
-        ItemHeight = 0
-        Items.Strings = (
-          'Nothing (default)'
-          'Cloak a banner ad'
-          'Cloak for ebook / text email'
-        )
-        TabOrder = 1
       end
       object GroupBox1: TGroupBox
         AnchorSideTop.Control = TabSheet1
@@ -3283,22 +3266,22 @@ object Form1: TForm1
         BorderSpacing.Top = 11
         BorderSpacing.Right = 40
         Caption = 'Extra Options'
-        ClientHeight = 94
-        ClientWidth = 389
-        TabOrder = 2
+        ClientHeight = 97
+        ClientWidth = 391
+        TabOrder = 0
         object CheckBox_SaveSessions: TCheckBox
           Left = 32
-          Height = 25
+          Height = 21
           Top = 8
-          Width = 214
+          Width = 204
           Caption = 'Automatically Save Sessions'
           TabOrder = 0
         end
         object CheckBox_GoogleTracking: TCheckBox
           Left = 32
-          Height = 25
+          Height = 21
           Top = 32
-          Width = 351
+          Width = 334
           Caption = 'Add Google Analytics Tracking (Advanced Users)'
           OnChange = CheckBox_GoogleTrackingChange
           TabOrder = 1
@@ -3307,11 +3290,11 @@ object Form1: TForm1
           AnchorSideTop.Control = CheckBox_GoogleTracking
           AnchorSideTop.Side = asrBottom
           Left = 136
-          Height = 29
-          Top = 57
+          Height = 31
+          Top = 53
           Width = 224
-          EditLabel.Height = 21
-          EditLabel.Width = 102
+          EditLabel.Height = 19
+          EditLabel.Width = 99
           EditLabel.Caption = 'Event Category'
           LabelPosition = lpLeft
           TabOrder = 2
@@ -3319,180 +3302,52 @@ object Form1: TForm1
       end
       object GroupBox2: TGroupBox
         AnchorSideLeft.Control = TabSheet1
-        AnchorSideTop.Control = ComboBox_Method
         AnchorSideRight.Control = TabSheet1
         AnchorSideRight.Side = asrBottom
         Left = 13
         Height = 277
-        Top = 124
-        Width = 1082
+        Top = 123
+        Width = 1076
         Anchors = [akTop, akLeft, akRight]
         BorderSpacing.Left = 13
         BorderSpacing.Top = 50
         BorderSpacing.Right = 40
         Caption = 'Cloaking Info'
-        ClientHeight = 254
-        ClientWidth = 1078
-        TabOrder = 3
-        object ledit_afflink: TLabeledEdit
-          AnchorSideTop.Control = GroupBox2
-          Left = 144
-          Height = 32
-          Top = 8
-          Width = 816
-          AutoSize = False
-          BorderSpacing.Top = 8
-          EditLabel.Height = 21
-          EditLabel.Width = 121
-          EditLabel.Caption = 'Your Affiliate Link'
-          LabelPosition = lpLeft
-          TabOrder = 0
-        end
-        object ledit_altlink: TLabeledEdit
-          AnchorSideTop.Control = ledit_afflink
-          AnchorSideTop.Side = asrBottom
-          Left = 144
-          Height = 32
-          Top = 40
-          Width = 816
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 95
-          EditLabel.Caption = 'Alternate Link'
-          LabelPosition = lpLeft
-          TabOrder = 1
-          TextHint = 'Optional'
-        end
-        object ledit_Title: TLabeledEdit
-          AnchorSideTop.Control = ledit_altlink
-          AnchorSideTop.Side = asrBottom
-          Left = 144
-          Height = 32
-          Top = 72
-          Width = 464
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 29
-          EditLabel.Caption = 'Title'
-          LabelPosition = lpLeft
-          TabOrder = 2
-        end
-        object ledit_LinkText: TLabeledEdit
-          AnchorSideTop.Control = ledit_Title
-          AnchorSideTop.Side = asrBottom
-          Left = 144
-          Height = 32
-          Top = 104
-          Width = 464
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 61
-          EditLabel.Caption = 'Link Text'
-          LabelPosition = lpLeft
-          TabOrder = 3
-        end
-        object ledit_WebsiteURL: TLabeledEdit
-          AnchorSideTop.Control = ledit_LinkText
-          AnchorSideTop.Side = asrBottom
-          Left = 144
-          Height = 32
-          Top = 136
-          Width = 464
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 86
-          EditLabel.Caption = 'Website URL'
-          LabelPosition = lpLeft
-          TabOrder = 4
-        end
-        object ledit_RedirectPage: TLabeledEdit
-          AnchorSideTop.Control = ledit_WebsiteURL
-          AnchorSideTop.Side = asrBottom
-          Left = 144
-          Height = 32
-          Top = 168
-          Width = 208
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 139
-          EditLabel.Caption = 'Name Redirect Page'
-          LabelPosition = lpLeft
-          TabOrder = 6
-        end
-        object ledit_SubDirectory: TLabeledEdit
-          AnchorSideLeft.Control = StaticText1
-          AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = StaticText1
-          AnchorSideTop.Side = asrCenter
-          Left = 617
-          Height = 32
-          Top = 136
-          Width = 176
-          AutoSize = False
-          EditLabel.Height = 21
-          EditLabel.Width = 176
-          EditLabel.Caption = 'Sub Directory'
-          LabelPosition = lpBelow
-          TabOrder = 5
-          TextHint = 'Optional'
-        end
+        ClientHeight = 257
+        ClientWidth = 1074
+        TabOrder = 1
         object StaticText1: TStaticText
-          AnchorSideLeft.Control = ledit_WebsiteURL
           AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = ledit_WebsiteURL
           AnchorSideTop.Side = asrCenter
           Left = 608
-          Height = 25
-          Top = 140
+          Height = 21
+          Top = 142
           Width = 9
           AutoSize = True
           Caption = '/'
-          TabOrder = 9
-        end
-        object ComboBox_Extensions: TComboBox
-          AnchorSideLeft.Control = ledit_RedirectPage
-          AnchorSideLeft.Side = asrBottom
-          AnchorSideTop.Control = ledit_RedirectPage
-          AnchorSideTop.Side = asrCenter
-          Left = 352
-          Height = 29
-          Top = 170
-          Width = 100
-          AutoSize = False
-          ItemHeight = 0
-          ItemIndex = 0
-          Items.Strings = (
-            '.html'
-            '.htm'
-            '.php'
-            '.asp'
-          )
-          TabOrder = 7
-          Text = '.html'
+          TabOrder = 1
         end
         object BitBtnCloakLink: TBitBtn
-          AnchorSideLeft.Control = ledit_RedirectPage
-          AnchorSideTop.Control = ledit_RedirectPage
           AnchorSideTop.Side = asrBottom
           Left = 144
-          Height = 31
+          Height = 33
           Top = 206
-          Width = 161
+          Width = 156
           AutoSize = True
           BorderSpacing.Top = 6
           Caption = 'Cloak my affiliate Link'
           OnClick = BitBtnCloakLinkClick
-          TabOrder = 8
+          TabOrder = 0
         end
         object StaticText_RedirectPageAdded: TStaticText
           AnchorSideLeft.Control = BitBtnCloakLink
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = BitBtnCloakLink
           AnchorSideTop.Side = asrCenter
-          Left = 314
-          Height = 25
-          Top = 209
-          Width = 491
+          Left = 309
+          Height = 21
+          Top = 212
+          Width = 458
           AutoSize = True
           BorderSpacing.Left = 9
           Caption = 'Redirect page successfully created. You are now ready to upload to FTP'
@@ -3500,8 +3355,191 @@ object Form1: TForm1
           Font.Color = clGreen
           ParentFont = False
           ParentColor = False
-          TabOrder = 10
+          TabOrder = 2
           Visible = False
+        end
+        object DBEdit_Afflink: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = GroupBox2
+          Left = 144
+          Height = 31
+          Hint = 'Your Affiliate Link'
+          Top = 9
+          Width = 816
+          DataField = 'AffLink'
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          BorderSpacing.Top = 9
+          MaxLength = 0
+          TabOrder = 3
+        end
+        object Label10: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Afflink
+          AnchorSideTop.Side = asrCenter
+          Left = 58
+          Height = 19
+          Top = 15
+          Width = 83
+          BorderSpacing.Left = 58
+          Caption = 'Affiliate Link'
+        end
+        object DBEdit_Altlink: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Afflink
+          AnchorSideTop.Side = asrBottom
+          Left = 144
+          Height = 31
+          Top = 40
+          Width = 816
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          MaxLength = 0
+          TabOrder = 4
+          TextHint = 'Optional'
+        end
+        object lblAltlink: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Altlink
+          AnchorSideTop.Side = asrCenter
+          Left = 49
+          Height = 19
+          Top = 46
+          Width = 92
+          BorderSpacing.Left = 49
+          Caption = 'Alternate Link'
+        end
+        object lbl_Title: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Title
+          AnchorSideTop.Side = asrCenter
+          Left = 111
+          Height = 19
+          Top = 77
+          Width = 30
+          BorderSpacing.Left = 111
+          Caption = 'Title'
+        end
+        object DBEdit_Title: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Altlink
+          AnchorSideTop.Side = asrBottom
+          Left = 144
+          Height = 31
+          Top = 71
+          Width = 464
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          MaxLength = 0
+          TabOrder = 5
+        end
+        object DBEdit_LinkText: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_Title
+          AnchorSideTop.Side = asrBottom
+          Left = 144
+          Height = 31
+          Top = 102
+          Width = 464
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          MaxLength = 0
+          TabOrder = 6
+        end
+        object lbl_LinkText: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_LinkText
+          AnchorSideTop.Side = asrCenter
+          Left = 83
+          Height = 19
+          Top = 108
+          Width = 58
+          BorderSpacing.Left = 83
+          Caption = 'Link Text'
+        end
+        object lbl_URL: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_URL
+          AnchorSideTop.Side = asrCenter
+          Left = 56
+          Height = 19
+          Top = 139
+          Width = 85
+          BorderSpacing.Left = 56
+          Caption = 'Website URL'
+        end
+        object DBEdit_URL: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_LinkText
+          AnchorSideTop.Side = asrBottom
+          Left = 144
+          Height = 31
+          Hint = 'Your Website URL'
+          Top = 133
+          Width = 464
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          MaxLength = 0
+          TabOrder = 7
+        end
+        object DBEdit_SubDirectory: TDBEdit
+          AnchorSideLeft.Control = StaticText1
+          AnchorSideTop.Control = DBEdit_URL
+          Left = 618
+          Height = 31
+          Top = 133
+          Width = 176
+          DataSource = DataSource1
+          BorderSpacing.Left = 10
+          MaxLength = 0
+          TabOrder = 8
+          TextHint = 'Sub Directory'
+        end
+        object lbl_RedirectPage: TLabel
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_RedirectPage
+          AnchorSideTop.Side = asrCenter
+          Left = 9
+          Height = 19
+          Top = 170
+          Width = 132
+          BorderSpacing.Left = 9
+          Caption = 'Name Redirect Page'
+        end
+        object DBEdit_RedirectPage: TDBEdit
+          AnchorSideLeft.Control = GroupBox2
+          AnchorSideTop.Control = DBEdit_URL
+          AnchorSideTop.Side = asrBottom
+          Left = 144
+          Height = 31
+          Top = 164
+          Width = 208
+          DataSource = DataSource1
+          BorderSpacing.Left = 144
+          MaxLength = 0
+          TabOrder = 9
+        end
+        object DBComboBox_Extensions: TDBComboBox
+          AnchorSideLeft.Control = DBEdit_RedirectPage
+          AnchorSideLeft.Side = asrBottom
+          AnchorSideTop.Control = lbl_RedirectPage
+          AnchorSideTop.Side = asrCenter
+          Left = 353
+          Height = 31
+          Top = 164
+          Width = 100
+          BorderSpacing.Left = 1
+          DataField = 'Extension'
+          DataSource = DataSource1
+          ItemHeight = 0
+          Items.Strings = (
+            '.html'
+            '.htm'
+            '.php'
+            '.asp'
+          )
+          MaxLength = 0
+          TabOrder = 10
         end
       end
       object GroupBox3: TGroupBox
@@ -3510,28 +3548,27 @@ object Form1: TForm1
         AnchorSideTop.Side = asrBottom
         Left = 13
         Height = 136
-        Top = 416
+        Top = 415
         Width = 283
         BorderSpacing.Left = 13
         BorderSpacing.Top = 15
         Caption = 'Embedded Cookie'
-        ClientHeight = 113
-        ClientWidth = 279
-        TabOrder = 4
+        ClientHeight = 116
+        ClientWidth = 281
+        TabOrder = 2
         object CheckListBox1: TCheckListBox
           AnchorSideLeft.Control = GroupBox3
-          AnchorSideTop.Control = GroupBox3
           Left = 9
           Height = 64
           Top = 6
-          Width = 247
+          Width = 255
           BorderSpacing.Left = 9
           BorderSpacing.Top = 6
           Items.Strings = (
             'Include embedded cookie'
             'Force cookie with redirection'
           )
-          ItemHeight = 27
+          ItemHeight = 23
           TabOrder = 0
           Data = {
             020000000000
@@ -3573,7 +3610,7 @@ object Form1: TForm1
           Left = 96
           Height = 17
           Top = 82
-          Width = 166
+          Width = 168
           Anchors = [akTop, akLeft, akRight]
           BorderSpacing.Left = 3
           Caption = 'seconds before setting cookie'
@@ -3591,67 +3628,35 @@ object Form1: TForm1
         AnchorSideBottom.Control = TabSheet1
         AnchorSideBottom.Side = asrBottom
         Left = 306
-        Height = 164
-        Top = 426
-        Width = 819
+        Height = 173
+        Top = 425
+        Width = 813
         Anchors = [akTop, akLeft, akRight, akBottom]
         BorderSpacing.Left = 10
         BorderSpacing.Top = 10
         BorderSpacing.Right = 10
         BorderSpacing.Bottom = 10
         Color = clWindow
-        Columns = <        
-          item
-            Title.Caption = 'AffLink'
-            Width = 63
-            FieldName = 'AffLink'
-          end        
-          item
-            Title.Caption = 'AltLink'
-            Width = 62
-            FieldName = 'AltLink'
-          end        
-          item
-            Title.Caption = 'Title'
-            Width = 44
-            FieldName = 'Title'
-          end        
-          item
-            Title.Caption = 'LinkText'
-            Width = 72
-            FieldName = 'LinkText'
-          end        
-          item
-            Title.Caption = 'URL'
-            Width = 43
-            FieldName = 'URL'
-          end        
-          item
-            Title.Caption = 'Subfolder'
-            Width = 82
-            FieldName = 'Subfolder'
-          end        
-          item
-            Title.Caption = 'NamePage'
-            Width = 90
-            FieldName = 'NamePage'
-          end>
+        Columns = <>
+        DataSource = DataSource1
+        Flat = True
         Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
-        TabOrder = 5
+        TabOrder = 3
+        OnCellClick = DBGrid_SessionsCellClick
       end
       object StaticText_RecordAdded: TStaticText
         AnchorSideLeft.Control = Sbutton_PriorRecord
         AnchorSideTop.Control = Sbutton_PriorRecord
         AnchorSideTop.Side = asrBottom
-        Left = 241
+        Left = 233
         Height = 23
-        Top = 49
+        Top = 48
         Width = 220
         Caption = 'New record has been added'
         Font.Color = clGreen
         Font.Style = [fsBold]
         ParentFont = False
-        TabOrder = 6
+        TabOrder = 4
         Visible = False
       end
       object Label7: TLabel
@@ -3660,17 +3665,57 @@ object Form1: TForm1
         AnchorSideTop.Side = asrBottom
         AnchorSideBottom.Control = GroupBox3
         Left = 306
-        Height = 21
-        Top = 407
-        Width = 122
+        Height = 19
+        Top = 406
+        Width = 114
         BorderSpacing.Top = 6
         Caption = 'Previous Sessions'
+      end
+      object DBComboBox_Method: TDBComboBox
+        AnchorSideLeft.Control = Label2
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label2
+        AnchorSideTop.Side = asrCenter
+        Left = 132
+        Height = 31
+        Top = 74
+        Width = 141
+        BorderSpacing.Left = 7
+        DataField = 'Method'
+        DataSource = DataSource1
+        ItemHeight = 0
+        Items.Strings = (
+          'Framed'
+          'UnFramed'
+        )
+        MaxLength = 0
+        OnChange = DBComboBox_MethodChange
+        TabOrder = 5
+      end
+      object ComboBox_SpecialSettings: TComboBox
+        AnchorSideLeft.Control = Label3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = Label3
+        AnchorSideTop.Side = asrCenter
+        Left = 419
+        Height = 31
+        Top = 74
+        Width = 232
+        BorderSpacing.Left = 7
+        ItemHeight = 0
+        Items.Strings = (
+          'None (default)'
+          'Cloak a Banner Ad'
+          'Cloak for an email or e-book'
+        )
+        TabOrder = 6
+        Text = 'ComboBox_SpecialSettings'
       end
     end
     object TabSheet2: TTabSheet
       Caption = 'FTP Upload'
-      ClientHeight = 600
-      ClientWidth = 1135
+      ClientHeight = 608
+      ClientWidth = 1129
       ImageIndex = 1
       OnMouseUp = TabSheet2MouseUp
       object DBGrid_FTPSites: TDBGrid
@@ -3684,12 +3729,12 @@ object Form1: TForm1
         Columns = <        
           item
             Title.Caption = 'SiteName'
-            Width = 81
+            Width = 78
             FieldName = 'SiteName'
           end        
           item
             Title.Caption = 'HostName'
-            Width = 88
+            Width = 83
             FieldName = 'HostName'
           end>
         Options = [dgEditing, dgTitles, dgIndicator, dgColumnResize, dgColumnMove, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgAutoSizeColumns]
@@ -3705,17 +3750,17 @@ object Form1: TForm1
         Width = 512
         BorderSpacing.Left = 16
         Caption = 'Add FTP Info'
-        ClientHeight = 209
-        ClientWidth = 508
+        ClientHeight = 230
+        ClientWidth = 510
         TabOrder = 1
         object ledit_SiteName: TLabeledEdit
           AnchorSideTop.Control = GroupBox_FTPInfo
           Left = 96
-          Height = 29
+          Height = 31
           Top = 0
           Width = 200
-          EditLabel.Height = 21
-          EditLabel.Width = 74
+          EditLabel.Height = 19
+          EditLabel.Width = 71
           EditLabel.Caption = 'Site Name:'
           LabelPosition = lpLeft
           TabOrder = 0
@@ -3725,12 +3770,12 @@ object Form1: TForm1
           AnchorSideTop.Control = ledit_SiteName
           AnchorSideTop.Side = asrBottom
           Left = 96
-          Height = 29
-          Top = 33
+          Height = 31
+          Top = 35
           Width = 200
           BorderSpacing.Top = 4
-          EditLabel.Height = 21
-          EditLabel.Width = 33
+          EditLabel.Height = 19
+          EditLabel.Width = 32
           EditLabel.Caption = 'ftp://'
           LabelPosition = lpLeft
           TabOrder = 1
@@ -3741,12 +3786,12 @@ object Form1: TForm1
           AnchorSideTop.Control = SpinEdit_Port
           AnchorSideTop.Side = asrBottom
           Left = 96
-          Height = 29
-          Top = 99
+          Height = 31
+          Top = 103
           Width = 120
           BorderSpacing.Top = 4
-          EditLabel.Height = 21
-          EditLabel.Width = 81
+          EditLabel.Height = 19
+          EditLabel.Width = 75
           EditLabel.Caption = 'User Name:'
           LabelPosition = lpLeft
           TabOrder = 4
@@ -3756,12 +3801,12 @@ object Form1: TForm1
           AnchorSideTop.Control = ledit_Username
           AnchorSideTop.Side = asrBottom
           Left = 96
-          Height = 29
-          Top = 132
+          Height = 31
+          Top = 138
           Width = 120
           BorderSpacing.Top = 4
-          EditLabel.Height = 21
-          EditLabel.Width = 71
+          EditLabel.Height = 19
+          EditLabel.Width = 64
           EditLabel.Caption = 'Password:'
           LabelPosition = lpLeft
           TabOrder = 5
@@ -3773,10 +3818,10 @@ object Form1: TForm1
           AnchorSideTop.Control = ledit_FTP
           AnchorSideTop.Side = asrCenter
           Left = 305
-          Height = 29
-          Top = 33
+          Height = 31
+          Top = 35
           Width = 152
-          EditLabel.Height = 21
+          EditLabel.Height = 19
           EditLabel.Width = 152
           EditLabel.Caption = 'Home (Public) Folder'
           LabelPosition = lpBelow
@@ -3790,8 +3835,8 @@ object Form1: TForm1
           AnchorSideTop.Control = ledit_FTP
           AnchorSideTop.Side = asrCenter
           Left = 296
-          Height = 25
-          Top = 35
+          Height = 21
+          Top = 40
           Width = 9
           AutoSize = True
           Caption = '/'
@@ -3801,10 +3846,10 @@ object Form1: TForm1
           AnchorSideTop.Control = SpinEdit_Port
           AnchorSideTop.Side = asrCenter
           AnchorSideRight.Control = SpinEdit_Port
-          Left = 59
-          Height = 25
-          Top = 68
-          Width = 37
+          Left = 63
+          Height = 21
+          Top = 74
+          Width = 33
           Anchors = [akTop, akRight]
           AutoSize = True
           Caption = 'Port:'
@@ -3817,7 +3862,7 @@ object Form1: TForm1
           Left = 96
           Height = 29
           Hint = 'default is 21'
-          Top = 66
+          Top = 70
           Width = 114
           BorderSpacing.Top = 4
           TabOrder = 3
@@ -3832,6 +3877,7 @@ object Form1: TForm1
         AnchorSideRight.Side = asrBottom
         Left = 544
         Height = 37
+        Hint = 'Save FTP Info'
         Top = 186
         Width = 40
         Anchors = [akTop, akRight]
@@ -3953,6 +3999,8 @@ object Form1: TForm1
           DDD7AADDD7AA
         }
         OnMouseUp = Sbutton_SaveRecordFTPMouseUp
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_FirstRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Label1
@@ -3962,6 +4010,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_PriorRecordFTP
         Left = 299
         Height = 37
+        Hint = 'First Record'
         Top = 186
         Width = 41
         Anchors = [akTop, akRight]
@@ -4087,6 +4136,8 @@ object Form1: TForm1
           D4AACDCFA1E3DEADE1D7A1DEDAA0D8DEA5D2D5A3E2D4AAEDCEADDDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_PriorRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_FirstRecordFTP
@@ -4096,6 +4147,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_LastRecordFTP
         Left = 340
         Height = 37
+        Hint = 'Previous Record'
         Top = 186
         Width = 41
         Anchors = [akTop, akRight]
@@ -4220,6 +4272,8 @@ object Form1: TForm1
           D5AFDFD6A4DBD4A2E0DAA5E0DAA5DED5A3E2DBAAE3DDB0D5D2A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_LastRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_PriorRecordFTP
@@ -4229,6 +4283,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_AddRecordFTP
         Left = 381
         Height = 37
+        Hint = 'Last Record'
         Top = 186
         Width = 41
         Anchors = [akTop, akRight]
@@ -4353,6 +4408,8 @@ object Form1: TForm1
           D4AACDCFA1E3DEADE1D7A1DEDAA0D8DEA5D2D5A3E2D4AAEDCEADDDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_AddRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_LastRecordFTP
@@ -4362,6 +4419,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_DeleteRecordFTP
         Left = 422
         Height = 37
+        Hint = 'Add New Record'
         Top = 186
         Width = 41
         Anchors = [akTop, akRight]
@@ -4487,6 +4545,8 @@ object Form1: TForm1
           DDD7AADDD7AADDD7AA00
         }
         OnMouseUp = Sbutton_AddRecordFTPMouseUp
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_DeleteRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_AddRecordFTP
@@ -4496,6 +4556,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_EditRecordFTP
         Left = 463
         Height = 37
+        Hint = 'Delete Record'
         Top = 186
         Width = 41
         Anchors = [akTop, akRight]
@@ -4620,6 +4681,8 @@ object Form1: TForm1
           D4A5E5D1A2ECDDACDCD49FDDD6A4E3DBACDDD2A6DFD5A6DDD5A6DDD7AADDD7AA
           DDD7AADDD7AADDD7AA00
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object Sbutton_EditRecordFTP: TSpeedButton
         AnchorSideLeft.Control = Sbutton_DeleteRecordFTP
@@ -4629,6 +4692,7 @@ object Form1: TForm1
         AnchorSideRight.Control = Sbutton_SaveRecordFTP
         Left = 504
         Height = 37
+        Hint = 'Edit Record'
         Top = 186
         Width = 40
         Anchors = [akTop, akRight]
@@ -4749,6 +4813,8 @@ object Form1: TForm1
           D6A7DED8ABDDD7AADED8ABD8D2A5E7E1B4DDD7AAD7D1A4E2DCAFDDD7AADDD7AA
           DDD7AADDD7AA
         }
+        ShowHint = True
+        ParentShowHint = False
       end
       object StaticText_RecordAddedFTP: TStaticText
         AnchorSideLeft.Control = Sbutton_PriorRecordFTP
@@ -4782,9 +4848,9 @@ object Form1: TForm1
         AnchorSideTop.Side = asrBottom
         AnchorSideBottom.Control = StaticText_RecordAddedFTP
         Left = 24
-        Height = 21
+        Height = 19
         Top = 252
-        Width = 71
+        Width = 68
         BorderSpacing.Top = 4
         Caption = 'FTP Status'
       end
@@ -4793,9 +4859,9 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Memo_FTPStatus
         Left = 600
-        Height = 31
+        Height = 33
         Top = 272
-        Width = 150
+        Width = 143
         AutoSize = True
         BorderSpacing.Left = 16
         Caption = 'Connect and Upload'
@@ -4807,9 +4873,9 @@ object Form1: TForm1
         AnchorSideTop.Control = Button_FTPConnect
         AnchorSideTop.Side = asrBottom
         Left = 600
-        Height = 21
-        Top = 322
-        Width = 72
+        Height = 19
+        Top = 324
+        Width = 67
         BorderSpacing.Top = 19
         Caption = 'Upload to:'
         ParentFont = False
@@ -4819,10 +4885,10 @@ object Form1: TForm1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = Button_FTPConnect
         AnchorSideTop.Side = asrCenter
-        Left = 759
-        Height = 21
-        Top = 277
-        Width = 124
+        Left = 752
+        Height = 19
+        Top = 279
+        Width = 113
         BorderSpacing.Left = 9
         Caption = 'Upload Complete'
         Font.Color = clGreen
@@ -4834,9 +4900,9 @@ object Form1: TForm1
         AnchorSideTop.Control = Label_UploadTo
         AnchorSideTop.Side = asrBottom
         Left = 600
-        Height = 21
+        Height = 19
         Top = 361
-        Width = 152
+        Width = 144
         BorderSpacing.Top = 18
         Caption = 'Test Your Affiliate Link'
         Color = clCream
@@ -4851,8 +4917,8 @@ object Form1: TForm1
     end
     object TabSheet3: TTabSheet
       Caption = 'Copy Link Codes'
-      ClientHeight = 600
-      ClientWidth = 1135
+      ClientHeight = 608
+      ClientWidth = 1129
       ImageIndex = 2
       object GroupBox4: TGroupBox
         AnchorSideLeft.Control = TabSheet3
@@ -4864,16 +4930,16 @@ object Form1: TForm1
         BorderSpacing.Left = 38
         BorderSpacing.Top = 20
         Caption = 'Your Cloaked Link Code'
-        ClientHeight = 201
-        ClientWidth = 884
+        ClientHeight = 222
+        ClientWidth = 886
         TabOrder = 0
         object Label4: TLabel
           AnchorSideLeft.Control = GroupBox4
           AnchorSideTop.Control = GroupBox4
           Left = 24
-          Height = 21
+          Height = 19
           Top = 8
-          Width = 75
+          Width = 70
           BorderSpacing.Left = 24
           BorderSpacing.Top = 8
           Caption = 'Link Code:'
@@ -4885,10 +4951,10 @@ object Form1: TForm1
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Label4
           AnchorSideTop.Side = asrCenter
-          Left = 108
-          Height = 21
+          Left = 103
+          Height = 19
           Top = 8
-          Width = 510
+          Width = 485
           BorderSpacing.Left = 9
           Caption = 'Paste into your web page anywhere between the <body> and </body> tags'
         end
@@ -4898,7 +4964,7 @@ object Form1: TForm1
           AnchorSideTop.Side = asrBottom
           Left = 24
           Height = 144
-          Top = 38
+          Top = 36
           Width = 624
           BorderSpacing.Top = 9
           TabOrder = 0
@@ -4908,9 +4974,9 @@ object Form1: TForm1
           AnchorSideLeft.Side = asrBottom
           AnchorSideTop.Control = Memo_LinkCodes
           Left = 680
-          Height = 31
-          Top = 38
-          Width = 123
+          Height = 33
+          Top = 36
+          Width = 121
           AutoSize = True
           BorderSpacing.Left = 32
           Caption = 'Copy Link Codes'
@@ -4921,8 +4987,8 @@ object Form1: TForm1
           AnchorSideTop.Control = Label9
           AnchorSideTop.Side = asrBottom
           Left = 680
-          Height = 31
-          Top = 90
+          Height = 33
+          Top = 88
           Width = 169
           AutoSize = True
           Caption = 'Copy Cookie Code Only'
@@ -4933,9 +4999,9 @@ object Form1: TForm1
           AnchorSideTop.Control = Button_CopyLinkCodes
           AnchorSideTop.Side = asrBottom
           Left = 680
-          Height = 21
+          Height = 19
           Top = 69
-          Width = 16
+          Width = 13
           Caption = 'or'
           Font.Style = [fsBold]
           ParentFont = False
@@ -4951,16 +5017,16 @@ object Form1: TForm1
         Width = 650
         BorderSpacing.Top = 21
         Caption = 'Add a target to your link code'
-        ClientHeight = 116
-        ClientWidth = 646
+        ClientHeight = 119
+        ClientWidth = 648
         TabOrder = 1
         object RadioButton_TargetBlank: TRadioButton
           AnchorSideLeft.Control = GroupBox5
           AnchorSideTop.Control = GroupBox5
           Left = 32
-          Height = 25
+          Height = 21
           Top = 16
-          Width = 402
+          Width = 379
           BorderSpacing.Left = 32
           BorderSpacing.Top = 16
           Caption = 'target=''_blank'' (Page will open in a new window or tab)'
@@ -4973,9 +5039,9 @@ object Form1: TForm1
           AnchorSideTop.Control = RadioButton_TargetBlank
           AnchorSideTop.Side = asrBottom
           Left = 32
-          Height = 25
-          Top = 50
-          Width = 434
+          Height = 21
+          Top = 46
+          Width = 410
           BorderSpacing.Left = 32
           BorderSpacing.Top = 9
           Caption = 'target=''_top'' (Page will open in the same window at the top)'
@@ -4986,9 +5052,9 @@ object Form1: TForm1
           AnchorSideTop.Control = RadioButton_TargetTop
           AnchorSideTop.Side = asrBottom
           Left = 32
-          Height = 25
-          Top = 84
-          Width = 88
+          Height = 21
+          Top = 76
+          Width = 85
           BorderSpacing.Left = 32
           BorderSpacing.Top = 9
           Caption = 'No target'
@@ -6749,7 +6815,7 @@ object Form1: TForm1
     }
   end
   object SQLite3Connection1: TSQLite3Connection
-    Connected = False
+    Connected = True
     LoginPrompt = False
     DatabaseName = '/home/toadwick/Apps/Lazarus-Stable/projects/AmazingCloaker/ac.db'
     KeepConnection = False
@@ -6767,11 +6833,12 @@ object Form1: TForm1
     Left = 992
   end
   object DataSource1: TDataSource
+    DataSet = SQLQuery1
     Left = 1064
     Top = 16
   end
   object SQLTransaction1: TSQLTransaction
-    Active = False
+    Active = True
     Database = SQLite3Connection1
     Left = 1064
     Top = 80
@@ -6791,13 +6858,13 @@ object Form1: TForm1
     Top = 224
   end
   object SQLTransaction2: TSQLTransaction
-    Active = False
+    Active = True
     Database = SQLite3Connection2
     Left = 1056
     Top = 256
   end
   object SQLite3Connection2: TSQLite3Connection
-    Connected = False
+    Connected = True
     LoginPrompt = False
     DatabaseName = '/home/toadwick/Apps/Lazarus-Stable/projects/AmazingCloaker/ac.db'
     KeepConnection = False

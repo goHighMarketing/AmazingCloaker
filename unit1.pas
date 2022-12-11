@@ -6,9 +6,9 @@ interface
 
 uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
-  Menus, LCLProc, LCLType, LazHelpHTML, UTF8Process, LCLIntf, ComCtrls, ExtCtrls,
-  StdCtrls, Buttons, DBGrids, CheckLst, Spin, ftpsend, About, Prefs, IniFiles,
-  Sqlite3dyn, FileUtil;
+  Menus, LCLProc, LCLType, LazHelpHTML, UTF8Process, LCLIntf, ComCtrls,
+  ExtCtrls, StdCtrls, Buttons, DBGrids, CheckLst, Spin, DBCtrls, ftpsend, About,
+  Prefs, IniFiles, Sqlite3dyn, FileUtil;
 
 type
 
@@ -22,11 +22,18 @@ type
     CheckBox_SaveSessions: TCheckBox;
     CheckBox_GoogleTracking: TCheckBox;
     CheckListBox1: TCheckListBox;
-    ComboBox_Extensions: TComboBox;
     ComboBox_SpecialSettings: TComboBox;
-    ComboBox_Method: TComboBox;
     DataSource1: TDataSource;
     DataSource2: TDataSource;
+    DBComboBox_Extensions: TDBComboBox;
+    DBComboBox_Method: TDBComboBox;
+    DBEdit_RedirectPage: TDBEdit;
+    DBEdit_SubDirectory: TDBEdit;
+    DBEdit_URL: TDBEdit;
+    DBEdit_LinkText: TDBEdit;
+    DBEdit_Title: TDBEdit;
+    DBEdit_Altlink: TDBEdit;
+    DBEdit_Afflink: TDBEdit;
     DBGrid_FTPSites: TDBGrid;
     DBGrid_Sessions: TDBGrid;
     GroupBox1: TGroupBox;
@@ -40,6 +47,12 @@ type
     ImageList1: TImageList;
     ImageList_MainMenu: TImageList;
     Label1: TLabel;
+    Label10: TLabel;
+    lbl_RedirectPage: TLabel;
+    lbl_URL: TLabel;
+    lbl_LinkText: TLabel;
+    lbl_Title: TLabel;
+    lblAltlink: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
@@ -58,13 +71,6 @@ type
     ledit_Password: TLabeledEdit;
     ledit_PublicFolder: TLabeledEdit;
     ledit_EventCategory: TLabeledEdit;
-    ledit_afflink: TLabeledEdit;
-    ledit_altlink: TLabeledEdit;
-    ledit_Title: TLabeledEdit;
-    ledit_LinkText: TLabeledEdit;
-    ledit_WebsiteURL: TLabeledEdit;
-    ledit_RedirectPage: TLabeledEdit;
-    ledit_SubDirectory: TLabeledEdit;
     MainMenu1: TMainMenu;
     Memo_LinkCodes: TMemo;
     Memo_FTPStatus: TMemo;
@@ -119,7 +125,8 @@ type
     procedure BitBtnCloakLinkClick(Sender: TObject);
     procedure Button_FTPConnectClick(Sender: TObject);
     procedure CheckBox_GoogleTrackingChange(Sender: TObject);
-    procedure ComboBox_MethodChange(Sender: TObject);
+    procedure DBComboBox_MethodChange(Sender: TObject);
+    procedure DBGrid_SessionsCellClick(Column: TColumn);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -139,6 +146,7 @@ type
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Sbutton_AddRecordMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure Sbutton_FirstRecordClick(Sender: TObject);
     procedure Sbutton_SaveRecordFTPMouseUp(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure SpinEdit1Change(Sender: TObject);
@@ -147,6 +155,7 @@ type
     procedure TestAffiliateLink(test_afflink: String);
     procedure SQLQuery1FilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure StartDatabase;
+    procedure set_ComboBox_Method;
   private
     procedure DisableAdd_FTP;
     procedure EnableAdd_FTP;
@@ -156,6 +165,8 @@ type
     procedure InsertFTPDB;
     procedure InsertSessionsDB;
     procedure LoadFTP_DB;
+    procedure LoadSession(id: String);
+    procedure LoadSession_DB;
     procedure VisitGithub;
 
   public
@@ -215,6 +226,11 @@ begin
      // EnableAdd_Session();
 end;
 
+procedure TForm1.Sbutton_FirstRecordClick(Sender: TObject);
+begin
+     LoadSession_DB;
+end;
+
 procedure TForm1.Sbutton_SaveRecordFTPMouseUp(Sender: TObject;
   Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
 begin
@@ -260,33 +276,15 @@ begin
      SpinEdit_Port.Enabled:= false;
      ledit_Username.Enabled:= false;
      ledit_Password.Enabled:= false;
-     StartDatabase;
-     Try
-       SQLQuery1.Close;
-      //Use casting (Text to Varchar) in the sql query to avoid "Memo" displaying in the dbgrid for an existing Db with Text fields in the table.
-      // Otherwise, when creating the db, use VARCHAR instead of TEXT when creating the fields.
-     // SQLQuery1.SQL.Text:= 'SELECT CAST( "Sessions" as VARCHAR) as "Sessions", "SessionId" FROM "AffLink"';
-      SQLQuery1.SQL.Text:= 'SELECT * FROM "Sessions"';
-      SQLite3Connection1.Connected:= True;
-      SQLTransaction1.Active:= True;
-      DataSource1.DataSet:= SQLQuery1;
-      DBGrid_Sessions.DataSource:= DataSource1;
-      SQLQuery1.Open;
-      {$IFDEF WINDOWS}
-         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
-      {$ELSE}
-         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
-         If Isconsole then writeLn('Yay! Database loaded!');
-      {$ENDIF}
-      except
-          //   ShowMessage('Database ac.db Could not be Loaded');
-     end;
      if not FileExists(IniFile) then
-       ComboBox_Method.ItemIndex:=0;
+       DBComboBox_Method.ItemIndex:=0;
      ComboBox_SpecialSettings.ItemIndex:=0;
+     DBComboBox_Extensions.ItemIndex:=0;
      INI_SECTION_PREFS:= 'PREFS';
      INI_SECTION_SESSIONS:= 'Session_Settings';
      iniRead;
+     LoadSession_DB;
+ //    set_ComboBox_Method;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -315,10 +313,107 @@ begin
         CheckListBox1.Checked[0]:= INI.ReadBool(INI_SECTION_PREFS,'GenerateEmbeddedCookie',false);
         CheckListBox1.Checked[1]:= INI.ReadBool(INI_SECTION_PREFS,'ForceRedirectCookie',false);
         SpinEdit1.Value:= INI.ReadInteger(INI_SECTION_PREFS,'DefaultWaitTime',0);
-        ComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
+        DBComboBox_Method.ItemIndex:= INI.ReadInteger(INI_SECTION_PREFS,'CloakMethod',0);
     finally
         INI.Free;
      end;
+end;
+
+procedure TForm1.LoadSession_DB();
+var
+  method, extension: longint;
+begin
+    StartDatabase;
+     Try
+       SQLQuery1.Close;
+      //Use casting (Text to Varchar) in the sql query to avoid "Memo" displaying in the dbgrid for an existing Db with Text fields in the table.
+      // Otherwise, when creating the db, use VARCHAR instead of TEXT when creating the fields.
+     // SQLQuery1.SQL.Text:= 'SELECT CAST( "Sessions" as VARCHAR) as "Sessions", "SessionId" FROM "AffLink"';
+      SQLQuery1.SQL.Text:= 'SELECT * FROM "Sessions"';
+      SQLite3Connection1.Connected:= True;
+      SQLTransaction1.Active:= True;
+      DataSource1.DataSet:= SQLQuery1;
+      DBGrid_Sessions.DataSource:= DataSource1;
+      SQLQuery1.Open;
+      {$IFDEF WINDOWS}
+         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
+      {$ELSE}
+         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
+         If Isconsole then writeLn('Yay! Database loaded!');
+      {$ENDIF}
+      except
+          //   ShowMessage('Database ac.db Could not be Loaded');
+     end;
+
+     method:= StrToInt(DBComboBox_Method.Text);
+     extension:= StrToInt(DBComboBox_Extensions.Text);
+     DBComboBox_Method.ItemIndex:= method;
+     ComboBox_SpecialSettings.ItemIndex:= 0;
+     set_ComboBox_Method;
+
+     // Hide SOME DATA-GRID COLUMNS
+     DBGrid_Sessions.Options := DBGrid_Sessions.Options - [dgIndicator];  // remove indicator
+     DBGrid_Sessions.Columns.Items[8].Visible:= false;
+     DBGrid_Sessions.Columns.Items[9].Visible:= false;
+     DBGrid_Sessions.Columns.Items[10].Visible:= false;
+     DBGrid_Sessions.Columns.Items[11].Visible:= false;
+     DBGrid_Sessions.Columns.Items[12].Visible:= false;
+     DBGrid_Sessions.Columns.Items[13].Visible:= false;
+     DBGrid_Sessions.Columns.Items[14].Visible:= false;
+     DBGrid_Sessions.Columns.Items[15].Visible:= false;
+     DBGrid_Sessions.Columns.Items[16].Visible:= false;
+
+end;
+
+procedure TForm1.LoadSession(id: String);
+var
+  method, special: longint;
+begin
+    Try
+      SQLQuery1.Close;
+      SQLQuery1.SQL.Text:= 'SELECT * FROM "Sessions" WHERE id=' + QuotedStr(id);
+      SQLite3Connection1.Connected:= True;
+      SQLTransaction1.Active:= True;
+      DataSource1.DataSet:= SQLQuery1;
+      DBGrid_Sessions.DataSource:= DataSource1;
+      SQLQuery1.Open;
+      {$IFDEF WINDOWS}
+         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
+      {$ELSE}
+         StatusBar1.Panels.Items[1].Text:='Yay! Database loaded!';
+         If Isconsole then writeLn('Yay! Database loaded from dbGrid!');
+      {$ENDIF}
+    except
+          //   ShowMessage('Database ac.db Could not be Loaded');
+    end;
+     DBEdit_Afflink.DataField:= 'AffLink';
+     DBEdit_Altlink.DataField:= 'AltLink';
+     DBEdit_Title.DataField:= 'Title';
+     DBEdit_LinkText.DataField:= 'LinkText';
+     DBEdit_URL.DataField:= 'URL';
+     DBEdit_SubDirectory.DataField:= 'Subfolder';
+     DBEdit_RedirectPage.DataField:= 'NamePage';
+     DBComboBox_Method.DataField:= 'Method';
+     ComboBox_SpecialSettings.ItemIndex:= StrToInt(DBGrid_Sessions.Columns.Items[10].Field.Text);
+     DBComboBox_Extensions.DataField:= 'Extension';
+
+     method:= StrToInt(DBComboBox_Method.Text);
+  //   special:= StrToInt(DBComboBox_SpecialSettings.Text);
+     DBComboBox_Method.ItemIndex:= method;
+  //   DBComboBox_SpecialSettings.ItemIndex:= special;
+     set_ComboBox_Method;
+
+     DBGrid_Sessions.Options := DBGrid_Sessions.Options - [dgIndicator];  // remove indicator
+     DBGrid_Sessions.Columns.Items[8].Visible:= false;
+     DBGrid_Sessions.Columns.Items[9].Visible:= false;
+     DBGrid_Sessions.Columns.Items[10].Visible:= false;
+     DBGrid_Sessions.Columns.Items[11].Visible:= false;
+     DBGrid_Sessions.Columns.Items[12].Visible:= false;
+     DBGrid_Sessions.Columns.Items[13].Visible:= false;
+     DBGrid_Sessions.Columns.Items[14].Visible:= false;
+     DBGrid_Sessions.Columns.Items[15].Visible:= false;
+     DBGrid_Sessions.Columns.Items[16].Visible:= false;
+     set_ComboBox_Method;
 end;
 
 procedure TForm1.LoadFTP_DB();
@@ -390,28 +485,50 @@ begin
        end;
 end;
 
-procedure TForm1.ComboBox_MethodChange(Sender: TObject);
-var
-  index: Integer;
+procedure TForm1.DBComboBox_MethodChange(Sender: TObject);
 begin
-    index:= ComboBox_Method.ItemIndex;
-    if index = 1 then
-      begin
-        ComboBox_Extensions.Clear;
-        ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
-        ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
-        ComboBox_Extensions.ItemIndex:=0;
-        exit;
-      end;
-    if index = 0 then
-      begin
-        ComboBox_Extensions.Clear;
-        ComboBox_Extensions.AddItem('.html', ComboBox_Extensions);
-        ComboBox_Extensions.AddItem('.htm', ComboBox_Extensions);
-        ComboBox_Extensions.AddItem('.php', ComboBox_Extensions);
-        ComboBox_Extensions.AddItem('.asp', ComboBox_Extensions);
-        ComboBox_Extensions.ItemIndex:=0;
-      end;
+      set_ComboBox_Method;
+end;
+
+procedure TForm1.DBGrid_SessionsCellClick(Column: TColumn);
+var
+  id: String;
+begin
+    if DBGrid_Sessions.SelectedColumn.FieldName = 'id' then
+    begin
+        id:= DBGrid_Sessions.Columns.Items[0].Field.Text;
+        LoadSession(id);
+    end;
+
+end;
+
+
+procedure TForm1.set_ComboBox_Method();
+var
+  index: String;
+begin
+   index:= DBComboBox_Method.Text;
+if index = 'Framed' then
+  begin
+    DBComboBox_Extensions.Clear;
+    DBComboBox_Extensions.AddItem('.html', DBComboBox_Extensions);
+    DBComboBox_Extensions.AddItem('.htm', DBComboBox_Extensions);
+    DBComboBox_Extensions.AddItem('.php', DBComboBox_Extensions);
+    DBComboBox_Extensions.AddItem('.asp', DBComboBox_Extensions);
+    DBComboBox_Extensions.ItemIndex:=0;
+    DBComboBox_Extensions.Refresh;
+    exit;
+    end;
+if index = 'UnFramed' then
+  begin
+    // ShowMessage(ComboBox_Method.Text);
+    DBComboBox_Extensions.Clear;
+    DBComboBox_Extensions.AddItem('.php', DBComboBox_Extensions);
+    DBComboBox_Extensions.AddItem('.asp', DBComboBox_Extensions);
+    DBComboBox_Extensions.Refresh;
+    DBComboBox_Extensions.ItemIndex:=0;
+    exit;
+  end;
 end;
 
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -426,7 +543,7 @@ var
    url: String;
 begin
      if ledit_FTP.Text = '' then exit;
-     url:= ledit_WebsiteURL.Text;
+     url:= DBEdit_URL.Text;
      if url.Contains('http://') then prefix:= 'http://' else prefix:= 'https://';
      test_afflink:= prefix + ledit_FTP.Text + '/' + ledit_PublicFolder.Text;
      Label_UploadTo.Caption:= test_afflink;
@@ -436,7 +553,7 @@ procedure TForm1.BitBtnCloakLinkClick(Sender: TObject);
 var
    url: String;
 begin
-  url:= ledit_WebsiteURL.Text;
+  url:= DBEdit_URL.Text;
   if url.Contains('http://') then prefix:= 'http://'
   else prefix:= 'https://';
 end;
