@@ -394,7 +394,11 @@ begin
      ComboBox_Extensions.ItemIndex:= extension;
      ComboBox_Method.ItemIndex:= StrToInt(DBGrid_Sessions.Columns.Items[9].Field.Text);
      ComboBox_SpecialSettings.ItemIndex:= StrToInt(DBGrid_Sessions.Columns.Items[10].Field.Text);
-
+     CheckBox_InclCookie.Checked:= StrToBool(DBGrid_Sessions.Columns.Items[11].Field.Text);
+     CheckBox_ForceCookie.Checked:= StrToBool(DBGrid_Sessions.Columns.Items[12].Field.Text);
+     SpinEdit1.Text:= DBGrid_Sessions.Columns.Items[13].Field.Text;
+     CheckBox_GoogleTracking.Checked:= StrToBool(DBGrid_Sessions.Columns.Items[14].Field.Text);
+     ledit_EventCategory.Text:= DBGrid_Sessions.Columns.Items[16].Field.Text;
   //   special:= StrToInt(DBComboBox_SpecialSettings.Text);
   //   DBComboBox_SpecialSettings.ItemIndex:= special;
      set_ComboBox_Method;
