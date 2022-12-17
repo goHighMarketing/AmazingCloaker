@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, SQLite3Conn, SQLDB, DB, Forms, Controls, Graphics, Dialogs,
   Menus, LCLProc, LCLType, LazHelpHTML, UTF8Process, LCLIntf, ComCtrls,
   ExtCtrls, StdCtrls, Buttons, DBGrids, CheckLst, Spin, DBCtrls, ftpsend, About,
-  Prefs, IniFiles, Sqlite3dyn, FileUtil;
+  Prefs, IniFiles, Sqlite3dyn, FileUtil, Clipbrd;
 
 type
 
@@ -41,7 +41,6 @@ type
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
     GroupBox4: TGroupBox;
-    GroupBox5: TGroupBox;
     GroupBox_FTPInfo: TGroupBox;
     Image1: TImage;
     Image2: TImage;
@@ -82,9 +81,7 @@ type
     MenuItemViewHelp: TMenuItem;
     MenuItemHelp: TMenuItem;
     PageControl1: TPageControl;
-    RadioButton_TargetBlank: TRadioButton;
-    RadioButton_TargetTop: TRadioButton;
-    RadioButton_TargetNone: TRadioButton;
+    RadioGroup1: TRadioGroup;
     Sbutton_AddRecordFTP: TSpeedButton;
     Sbutton_DeleteRecordFTP: TSpeedButton;
     Sbutton_EditRecordFTP: TSpeedButton;
@@ -123,10 +120,14 @@ type
     Quit: TMenuItem;
     MenuItemFile: TMenuItem;
     iniSettings: TStringList;
+    Timer_Cloak: TTimer;
     procedure BitBtnCloakLinkClick(Sender: TObject);
+    procedure Button_CopyCookieCodeClick(Sender: TObject);
+    procedure Button_CopyLinkCodesClick(Sender: TObject);
     procedure Button_FTPConnectClick(Sender: TObject);
     procedure CheckBox_GoogleTrackingChange(Sender: TObject);
     procedure ComboBox_MethodChange(Sender: TObject);
+    procedure ComboBox_SpecialSettingsChange(Sender: TObject);
     procedure DBComboBox_MethodChange(Sender: TObject);
     procedure DBGrid_SessionsCellClick(Column: TColumn);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
@@ -144,6 +145,10 @@ type
     procedure MenuItemVisitGithubClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure QuitClick(Sender: TObject);
+    procedure RadioButton_TargetBlankClick(Sender: TObject);
+    procedure RadioButton_TargetNoneChange(Sender: TObject);
+    procedure RadioButton_TargetTopChange(Sender: TObject);
+    procedure RadioGroup1SelectionChanged(Sender: TObject);
     procedure Sbutton_AddRecordFTPMouseUp(Sender: TObject;
       Button: TMouseButton; Shift: TShiftState; X, Y: Integer);
     procedure Sbutton_AddRecordMouseUp(Sender: TObject; Button: TMouseButton;
@@ -158,7 +163,9 @@ type
     procedure SQLQuery1FilterRecord(DataSet: TDataSet; var Accept: Boolean);
     procedure StartDatabase;
     procedure set_ComboBox_Method;
+    procedure Timer_CloakTimer(Sender: TObject);
   private
+    procedure CloakText(afflink: String);
     procedure DisableAdd_FTP;
     procedure EnableAdd_FTP;
     function FTPSend(LocalFile: string; remoteFile: string; RemoteDir: string
@@ -169,11 +176,19 @@ type
     procedure LoadFTP_DB;
     procedure LoadSession(id: String);
     procedure LoadSession_DB;
+    procedure turnOffTargetButtons;
+    function ValidateFormFields: Boolean;
     procedure VisitGithub;
+    procedure WriteFile(data: String);
+    procedure writeJSFile(code2: String);
+    function SetLinkCodeTargets: String;
+    procedure ProcessLinkCodes;
+    procedure turnOnTargetButtons;
 
   public
     test_afflink, afflink, prefix: String;
     fHost, fUserID, fPassword: String;
+    javaCookie, _target, link: String;
     INI: TINIFile;
     INI_SECTION_PREFS, INI_SECTION_SESSIONS: String;
     AutoSaveSessions, GenEmbeddedCookie, ForceCookie: Bool;
@@ -214,6 +229,46 @@ end;
 procedure TForm1.QuitClick(Sender: TObject);
 begin
       Form1.Close;
+end;
+
+procedure TForm1.RadioButton_TargetBlankClick(Sender: TObject);
+begin
+     _target:= SetLinkCodeTargets;
+end;
+
+procedure TForm1.RadioButton_TargetNoneChange(Sender: TObject);
+begin
+  _target:= SetLinkCodeTargets;
+end;
+
+procedure TForm1.RadioButton_TargetTopChange(Sender: TObject);
+begin
+  _target:= SetLinkCodeTargets;
+end;
+
+procedure TForm1.RadioGroup1SelectionChanged(Sender: TObject);
+begin
+  _target:= SetLinkCodeTargets;
+  {
+     if isConsole then writeLn('target rg = Target');
+     if RadioGroup1.ItemIndex = 0 then
+     begin
+          _target:= ' target="_blank"';
+          processLinkcodes;
+          exit;
+     end;
+     if RadioGroup1.ItemIndex = 1 then
+     begin
+          _target:= ' target="_top"';
+          processLinkcodes;
+          exit;
+     end;
+     if RadioGroup1.ItemIndex = 2 then
+     begin
+          _target:= ''; //SetLinkCodeTargets;
+          processLinkcodes;
+          exit;
+     end; }
 end;
 
 procedure TForm1.Sbutton_AddRecordFTPMouseUp(Sender: TObject;
@@ -287,6 +342,9 @@ begin
      iniRead;
      LoadSession_DB;
      set_ComboBox_Method;
+     _target:= '';
+     javaCookie:= '';
+     RadioGroup1.ItemIndex:=0;
 end;
 
 procedure TForm1.FormShow(Sender: TObject);
@@ -490,6 +548,14 @@ begin
        set_ComboBox_Method;
 end;
 
+procedure TForm1.ComboBox_SpecialSettingsChange(Sender: TObject);
+begin
+    if ComboBox_SpecialSettings.ItemIndex = 2 then
+       turnOffTargetButtons
+    else
+       turnOnTargetButtons;
+end;
+
 procedure TForm1.DBComboBox_MethodChange(Sender: TObject);
 begin
       set_ComboBox_Method;
@@ -536,6 +602,12 @@ if index = 'Un-Framed' then
   end;
 end;
 
+procedure TForm1.Timer_CloakTimer(Sender: TObject);
+begin
+       StaticText_RedirectPageAdded.Visible:=false;
+       Timer_Cloak.Enabled:=false;
+end;
+
 procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
      SQLQuery1.Close;
@@ -558,9 +630,313 @@ procedure TForm1.BitBtnCloakLinkClick(Sender: TObject);
 var
    url: String;
 begin
+  if ValidateFormFields = false then exit;
+  Memo_LinkCodes.Clear;
   url:= DBEdit_URL.Text;
   if url.Contains('http://') then prefix:= 'http://'
   else prefix:= 'https://';
+  afflink:= DBEdit_Afflink.Text;
+  CloakText(afflink);
+  Application.ProcessMessages;
+  StaticText_RedirectPageAdded.Visible:=true;
+  Timer_Cloak.Interval:=5000;
+  Timer_Cloak.Enabled:=true;
+end;
+
+procedure TForm1.Button_CopyCookieCodeClick(Sender: TObject);
+begin
+     Clipboard.AsText:= javaCookie;
+end;
+
+procedure TForm1.Button_CopyLinkCodesClick(Sender: TObject);
+begin
+     Clipboard.AsText:= Memo_LinkCodes.Text;
+end;
+
+function TForm1.ValidateFormFields():Boolean;
+var
+   res: Boolean;
+   altlink, wurl: String;
+begin
+     res:= true;
+     afflink:= DBEdit_Afflink.Text;
+     altlink:= DBEdit_Altlink.Text;
+     wurl:= DBEdit_URL.Text;
+     if DBEdit_Afflink.Text = '' then
+       begin
+       ShowMessage('Please enter Affiliate Link');
+       DBEdit_Afflink.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if (not afflink.StartsWith('http')) and (not afflink.StartsWith('https')) then
+       begin
+       ShowMessage('Invalid Affiliate Link' + sLineBreak +'Make sure it contains http:// or https://');
+       DBEdit_Afflink.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if (not altlink.StartsWith('http')) and (not altlink.StartsWith('https')) then
+       begin
+       ShowMessage('Invalid Alternate Link' + sLineBreak +'Make sure it contains http:// or https://');
+       DBEdit_Altlink.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if DBEdit_LinkText.Text = '' then
+       begin
+       ShowMessage('Please add Some Link Text');
+       DBEdit_LinkText.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if DBEdit_URL.Text = '' then
+       begin
+       ShowMessage('Please add Your Website URL');
+       DBEdit_URL.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if (not wurl.StartsWith('http')) and (not wurl.StartsWith('https')) then
+       begin
+       ShowMessage('Invalid Website Link' + sLineBreak +'Make sure it contains http:// or https://');
+       DBEdit_URL.SetFocus;
+       result:= false;
+       exit;
+       end;
+     if DBEdit_RedirectPage.Text = '' then
+       begin
+       ShowMessage('Please Name Your Redirect Page');
+       DBEdit_RedirectPage.SetFocus;
+       result:= false;
+       exit;
+       end;
+     result:= res;
+end;
+
+procedure TForm1.ProcessLinkCodes();
+var
+   outgoingLink, code3, visLinkTxt: String;
+   index: integer;
+begin
+    Memo_LinkCodes.Clear;
+     visLinkTxt:= DBEdit_LinkText.Text;
+     if isConsole then writeln('_target = ' + _target);
+     if CheckBox_GoogleTracking.Checked then
+     begin
+        if RadioGroup1.ItemIndex = 2 then //Target None checked
+           outgoingLink:= ' onClick="that=this;_gaq.push([''_trackEvent'',''' + ledit_EventCategory.Text + ''',''clicks'',this.href]);" '
+        else
+            outgoingLink:= ' onClick="that=this;_gaq.push([''_trackEvent'',''' + ledit_EventCategory.Text + ''',''clicks'',that.href]);setTimeout(function() { location.href=that.href }, 200);return false;" '
+     end else
+         outgoingLink:= '';
+      javaCookie:= sLineBreak + '<script type="text/javascript" src="' + DBEdit_URL.Text + '/js/' + DBEdit_RedirectPage.Text + '.js"></script>';
+      index:= ComboBox_SpecialSettings.ItemIndex;
+         Case index of
+           1: if CheckBox_InclCookie.Checked or CheckBox_ForceCookie.Checked then
+                 code3:= '<a href="' + link + '"' + outgoingLink + _target + '> insert your img tag here </a>' + javaCookie
+               else
+                 code3:= '<a href="' + link + '"' + outgoingLink + _target + '> insert your img tag here </a>';
+           2: code3:= link;
+               else
+                 if CheckBox_InclCookie.Checked or CheckBox_ForceCookie.Checked then
+                    code3:= '<a href="' + link + '"' + outgoingLink + _target + '>' + visLinkTxt + '</a>' + javaCookie
+                 else
+                    code3:= '<a href="' + link + '"' + outgoingLink + _target + '>' + visLinkTxt + '</a>';
+         end;
+      Application.ProcessMessages;
+      Memo_LinkCodes.Lines.AddText(code3);
+end;
+
+function TForm1.SetLinkCodeTargets():String;
+begin
+  if ComboBox_SpecialSettings.ItemIndex = 2 then
+  begin
+       RadioGroup1.ItemIndex:= 2;  // target="_none" is selected
+       turnOffTargetButtons;
+       _target:= '';
+       result:= _target;
+       exit;
+  end;
+  if isConsole then writeln('2 _target = ' + _target);
+
+  if RadioGroup1.Enabled = false then
+  begin
+    turnOnTargetButtons
+  end else begin
+    if RadioGroup1.ItemIndex = 0 then
+    begin
+        _target:= ' target="_blank"';
+        ProcessLinkCodes;
+        result:= _target;
+        exit;
+    end;
+
+    if RadioGroup1.ItemIndex = 1 then
+    begin
+        _target:= ' target="_top"';
+        ProcessLinkCodes;
+        result:= _target;
+        exit;
+    end;
+
+    if RadioGroup1.ItemIndex = 2 then
+    begin
+      _target:= '';
+      ProcessLinkCodes;
+      result:= _target;
+      exit;
+    end;
+
+  end;
+  result:= _target;
+end;
+
+procedure TForm1.turnOffTargetButtons();
+begin
+     RadioGroup1.Enabled:= false;
+end;
+
+procedure TForm1.turnOnTargetButtons();
+begin
+     RadioGroup1.Enabled:= true;
+end;
+
+procedure TForm1.CloakText(afflink: String);
+var
+   x,i: integer;
+   cloakedStr, data, encoded_js, encoded_cookie, code1, code2, code1a, timeout, cookieData, subfolder: String;
+begin
+    if afflink = '' then exit;
+    cloakedStr:= '';
+    encoded_js:= '';
+    encoded_cookie:= '';
+    timeout:= IntToStr(SpinEdit1.Value);
+    cookieData:= '<img src="' + afflink + '" height="1" width="1" border="0">';
+    subfolder:= DBEdit_SubDirectory.Text + '/';
+    if subfolder = '' then
+        link:= DBEdit_URL.Text + subfolder
+    else
+        link:= DBEdit_URL.Text + '/' + subfolder;
+    if DBEdit_AltLink.Text = '' then
+        afflink:= DBEdit_AffLink.Text;
+    if DBEdit_AltLink.Text > '' then
+        afflink:= DBEdit_AltLink.Text;
+    // Encode Affiliate Link and Javascript
+    for x:= 1 to length(afflink) do
+    begin
+       cloakedStr:= cloakedStr + '&#' + ord(afflink[x]).ToString() + ';';
+       encoded_js:= encoded_js + '&#' + ord(afflink[x]).ToString() + ';';
+    end;
+    // Encode Cookie Code
+    for i:= 1 to length(afflink) do
+    begin
+       encoded_cookie:= encoded_cookie + '#' + ord(cookieData[x]).ToString() + ';';
+    end;
+    code1:= '";setTimeout("timed_Redir()", ' + timeout + '*1000 );}function timed_Redir(){checkCookie("ac");}ye_days = 1;function bake(days){var today = new Date();var exp = new Date(today.getTime() + days*24*60*60*1000);return  exp.toGMTString();}function checkCookie(cookieName){    var begin = document.cookie.indexOf(cookieName);if (begin == -1){document.cookie = "ac_info=true; expires=" + bake(ye_days);window.location.href=afflink;} else {return false;}}' + DBEdit_RedirectPage.Text + '();';
+    code1a:= 'setTimeout("timed_Redir()", ' + timeout + '*1000 );function timed_Redir(){checkCookie("ac");}ye_days = 1;function bake(days){var today = new Date();var exp = new Date(today.getTime() + days*24*60*60*1000);return  exp.toGMTString();}function checkCookie(cookieName){    var begin = document.cookie.indexOf(cookieName);if (begin == -1){document.cookie = "ac_info=true; expires=" + bake(ye_days);' + DBEdit_RedirectPage.Text + '();} else {return false;}}';
+
+    if CheckBox_ForceCookie.Checked then
+            code2:= 'function ' + DBEdit_RedirectPage.Text + '() {code="' + encoded_cookie + '";document.write(unescape(code.replace(/#/g,"%")));' + 'afflink="' + afflink + code1
+    else
+            code2:= 'function ' + DBEdit_RedirectPage.Text + '() {code="' + encoded_cookie + '";document.write(unescape(code.replace(/#/g,"%")));}' + code1a;
+    if (CheckBox_InclCookie.Checked) or (CheckBox_ForceCookie.Checked ) then
+            writeJSFile(code2);
+    _target:= SetLinkCodeTargets;
+    ProcessLinkCodes;
+    // Un-Framed and .php selected
+        if (ComboBox_Method.ItemIndex = 1) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.php') then
+        begin
+          data:= '<?php' + sLineBreak + 'header("Location: ' + afflink + '");' + sLineBreak + 'exit;' + sLineBreak + '?>';
+          WriteFile(data);
+          exit;
+        end;
+
+        // Un-Framed and .asp selected
+        if (ComboBox_Method.ItemIndex = 1) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.asp') then
+        begin
+          data:= '<%' + sLineBreak + 'Response.Redirect "' + afflink + '"' + sLineBreak + '%>';
+          WriteFile(data);
+          exit;
+        end;
+
+        // Framed and .php selected
+        if (ComboBox_Method.ItemIndex = 0) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.php') then
+        begin
+          data:= '<? php' + sLineBreak + '?>' + sLineBreak + '<!-- #### This is protected page source and you are in an unauthorized view.  You must close this window now. #### -->' +
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          '<HTML><HEAD><script>window.status=" ";</script><title>' + DBEdit_Title.Text + '</title>' + sLineBreak +
+          '<frameset rows="0,*\" cols="*" frameborder=0 framespacing=0> ' + encoded_js + sLineBreak + '<frame src=""><frame src="' + cloakedStr + '"></frameset><noframes><body bgcolor="#FFFFFF" text="#000000"></body></noframes></HEAD></HTML>';
+          WriteFile(data);
+          exit;
+        end;
+
+        // Framed and .asp selected
+        if (ComboBox_Method.ItemIndex = 0) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.asp') then
+        begin
+          data:= ' <%' + sLineBreak + '%>' + sLineBreak + '<!-- #### This is protected page source and you are in an unauthorized view.  You must close this window now. #### -->' +
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          '<HTML><HEAD><script>window.status=" ";</script><title>' + DBEdit_Title.Text + '</title>' + sLineBreak + '<frameset rows="0,*" cols="*" frameborder=0 framespacing=0> ' + encoded_js + sLineBreak +
+          '<frame src=""><frame src="' + afflink + '"></frameset><noframes><body bgcolor="#FFFFFF" text="#000000"></body></noframes></HEAD></HTML>';
+          WriteFile(data);
+          exit;
+        end;
+    // Framed and .html selected
+    if (ComboBox_Method.ItemIndex = 0) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.html') then
+      begin
+          data:= '';
+          data:= '<!-- #### This is protected page source and you are in an unauthorized view.  You must close this window now. #### -->' +
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          '<HTML><HEAD><script>window.status=" "' +
+          '</script><title>' + DBEdit_Title.Text + '</title>' + sLineBreak + '<frameset rows="0,*" cols="*" frameborder=0 framespacing=0>'+ encoded_js + sLineBreak + '<frame src=""><frame src="' + cloakedStr + '">' +
+          '</frameset><noframes><body bgcolor="#FFFFFF" text="#000000"></body></noframes></HEAD></HTML>';
+          WriteFile(data);
+          exit;
+      end;
+    // Framed and .htm selected
+    if (ComboBox_Method.ItemIndex = 0) and (ComboBox_Extensions.Items.ValueFromIndex[ComboBox_Extensions.ItemIndex] = '.htm') then
+      begin
+          data:= '';
+          data:= '<!-- #### This is protected page source and you are in an unauthorized view.  You must close this window now. #### -->' +
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+sLineBreak+
+          '<HTML><HEAD><script>window.status=" "' +
+          '</script><title>' + DBEdit_Title.Text + '</title>' + sLineBreak + '<frameset rows="0,*" cols="*" frameborder=0 framespacing=0>'+ encoded_js + sLineBreak + '<frame src=""><frame src="' + cloakedStr + '">' +
+          '</frameset><noframes><body bgcolor="#FFFFFF" text="#000000"></body></noframes></HEAD></HTML>';
+          WriteFile(data);
+          exit;
+      end;
+end;
+
+procedure TForm1.WriteFile(data: String);
+var
+   yeFile: Text;
+   filename: String;
+begin
+  filename:= DBEdit_RedirectPage.Text + ComboBox_Extensions.Text;
+  AssignFile(yeFile, filename);
+  Rewrite(yeFile);
+  WriteLn(yeFile, data);
+  CloseFile(yeFile);
+end;
+
+procedure TForm1.writeJSFile(code2: String);
+var
+   jsFile: Text;
+   filename: String;
+begin
+  filename:= DBEdit_RedirectPage.Text + '.js';
+  AssignFile(jsFile, filename);
+  Rewrite(jsFile);
+  WriteLn(jsFile, code2);
+  CloseFile(jsFile);
 end;
 
 procedure TForm1.TestAffiliateLink(test_afflink: String);
@@ -655,9 +1031,10 @@ var
    createTables:boolean;
 begin
   {$IFDEF UNIX}  // Linux
-    {$IFNDEF DARWIN}  // Mac
-       sqlite3dyn.SQLiteDefaultLibrary := './libsqlite3.so';
-    {$ENDIF}
+       sqlite3dyn.SQLiteDefaultLibrary := 'libsqlite3.so';
+  {$ENDIF}
+  {$IFNDEF DARWIN}  // Mac
+       sqlite3dyn.SQLiteDefaultLibrary := 'libsqlite3.so';
   {$ENDIF}
 
   {$IFDEF WINDOWS} // Windows
